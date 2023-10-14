@@ -30,21 +30,6 @@ G_LT = 5000;
 G_LN = 2000;
 G_TN = 2000;
 
-%% Longarina
-% espessura_lamina = 0.15;
-% espessura_core = 30;
-% 
-% %Preencher Xt,Xc, Yt, Yc, S da ultima lamina
-% strength_val = [600 570 600 570 90];
-% 
-% %Preencher caracteristicas 
-% E_L = 70000;
-% E_T = 70000;
-% v_LT = 0.1;
-% v_TL = 0.1;
-% G_LT = 5000;
-% G_LN = 2000;
-% G_TN = 2000;
 
 %% Carregamento
 
@@ -57,10 +42,6 @@ My = 0;
 Mxy = 0;
 
 % filename = 'Cruise_a=1.50_v=19.66ms.txt';
-
-%% Leitura do ficheiro XFLR5
-
-% [L,M] = ficheiro (filename);
 
 %% Coisas
 
@@ -125,58 +106,6 @@ Gxy = 1/(espessura*A_inverse(3,3))
 
 Props_laminado = [Ex Ey vxy vyx Gxy];
 
-%% Cálculo Gyz e Gxz (Sem 100% de certeza)
-
-S44_0 = 1/G_TN;
-S55_0 = 1/G_LN;
-
-laminas+1
-
-for i=1:laminas+1
-        if n(i) == 1
-            m = cosd(45);
-            d = sind(45);
-        elseif n(i) == 2
-            m = cosd(-45);
-            d = sind(-45);
-        elseif n(i) == 3
-            m = cosd(90);
-            d = sind(90);
-        elseif n(i) == 4
-            m = cosd(0);
-            d = sind(0);
-        elseif n(i) == 5
-            m = 0;
-            d = 0;
-        end
-
-        S44 = S55_0*d^2 + S44_0*m^2;
-        S45 = (S55_0 - S44_0)*m*d;
-        S55 = S55_0*m^2 + S44_0*d^2;
-        
-        S_fsdt (:,:,i) = [S44 S45; S45 S55];
-        Q_fsdt (:,:,i) = S_fsdt(:,:,i)';
-end
-
-
-E=zeros(2,2);
-
- for i=1:2
-     for j=1:2
-         for k=1:laminas+1
-             if n(k)~= 5 %no programa de otimização também excluem o core para este cálculo
-                 E(i,j)=E(i,j)+ Q_fsdt(i,j,k)*(z(k+1)-z(k));
-             end
-         end
-     end
- end
-
- E_inverse = E';
-
- Gyz = 1/(espessura*E_inverse(1,1));
- Gxz = 1/(espessura*E_inverse(2,2));
-
-
 %% Extensão e curvatura da lamina superior da placa
 
 F_M = F_M';
@@ -208,33 +137,33 @@ strains_curvature_corrigida = Matriz_rotacao*strains_curvature';
 %considerar core
 tensions = Q_lamina(:,:,laminas+1)*strains_curvature_corrigida;
 
-%% Tsai-Wu Failure
-
-falha = Tsai_Wu(tensions, strength_val);
-fator_caganco_TW = 1/falha
-
-%% Buckling of Sandwich under Compression
-
-a = 115;
-b = 65.2;
-t_f=espessura_lamina*laminas;
-h=espessura_core+t_f;
-
-D=(Ex*t_f*(h^2)*b)/2;
-G_c=15;
-
-
-P_b_crit=(pi^2*D)/(a^2+(pi^2*D)/(G_c*h*b));
-P_b=-Nx*b;
-
-if P_b_crit> P_b
-    Buckling = 0;
-else 
-%     Buckling = 1;
-end
-fator_caganco_B=P_b_crit/P_b
-
+% %% Tsai-Wu Failure
 % 
+% falha = Tsai_Wu(tensions, strength_val);
+% fator_caganco_TW = 1/falha
+% 
+% %% Buckling of Sandwich under Compression
+% 
+% a = 115;
+% b = 65.2;
+% t_f=espessura_lamina*laminas;
+% h=espessura_core+t_f;
+% 
+% D=(Ex*t_f*(h^2)*b)/2;
+% G_c=15;
+% 
+% 
+% P_b_crit=(pi^2*D)/(a^2+(pi^2*D)/(G_c*h*b));
+% P_b=-Nx*b;
+% 
+% if P_b_crit> P_b
+%     Buckling = 0;
+% else 
+% %     Buckling = 1;
+% end
+% fator_caganco_B=P_b_crit/P_b
+% 
+% % 
 % Gyz=15;
 % AR = a/b;
 % 
