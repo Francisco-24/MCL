@@ -4,31 +4,30 @@ clc
 
 %% INPUTS
 % Preencher
-laminas = 6;
+laminas = 8;
 
 % Preencher o seguinte vetor:
 % 1 -> camada de carbono 45 graus
 % 2 -> camada de carbono -45 graus
 % 3 -> camada de carbono 90 graus
 % 4 -> camada de carbono 0 graus
-% 5 -> camada de core AIREX C70.75
-n = [4 3 3 5 3 3 3];
+n = [4 3 2 1 5 1 2 3 4];
 
 %% CASCA
-espessura_lamina = 0.21;
-espessura_core = 4;
+espessura_lamina = 0.14;
+espessura_core = 0;
 
 %Preencher Xt,Xc, Yt, Yc, S da ultima lamina
 strength_val = [1500 1200 50 250 70];
 
 %Preencher caracteristicas 
-E_L = 135000;
-E_T = 10000;
-v_LT = 0.3;
-v_TL = 0.3;
-G_LT = 5000;
-G_LN = 2000;
-G_TN = 2000;
+E_L = 177800;
+E_T = 11050;
+v_LT = 0.27;
+v_TL = v_LT*E_T/E_L
+G_LT = 7600;
+%G_LN = 2000;
+%G_TN = 2000;
 
 
 %% Carregamento
@@ -52,7 +51,8 @@ F_M = [Nx Ny Nxy Mx My Mxy];
 %% matrizes Q com os valores já nas direções principais
 for i=1:laminas+1
     if n(i) ~= 5
-    Q_lamina(:,:,i) = matriz_Q(n(i), Props_fibra)  ; 
+    Q_lamina(:,:,i) = matriz_Q(n(i), Props_fibra);
+    Q_lamina_novo(:,:,i) = matriz_Q_novo(n(i), Props_fibra);
     end
 end
 

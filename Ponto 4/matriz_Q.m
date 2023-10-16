@@ -5,12 +5,6 @@ E_T = Props_fibra(2);
 v_LT = Props_fibra(3);
 v_TL = Props_fibra(4);
 G_LT = Props_fibra(5);
-
-%     E_L = 70000;
-%     E_T = 70000;
-%     v_LT = 0.1;
-%     v_TL = 0.1;
-%     G_LT = 5000;
 if tipo_lamina == 1
     angle= 45;
     
@@ -22,6 +16,12 @@ elseif tipo_lamina == 3
 elseif tipo_lamina == 4
     angle= 0;
 end
+%     E_L = 70000;
+%     E_T = 70000;
+%     v_LT = 0.1;
+%     v_TL = 0.1;
+%     G_LT = 5000;
+
 
 Q_xx =(E_L)/(1-v_LT*v_TL);
 Q_yy =(E_T)/(1-v_LT*v_TL);
