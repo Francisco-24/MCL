@@ -12,8 +12,6 @@ G_LT = Props_fibra(5);
 % v_TL = v_LT*E_T/E_L
 % G_LT = 7600;
 
-tipo_lamina = 2
-
 Q_inv = [1/E_L -v_TL/E_T 0; -v_LT/E_L 1/E_T 0; 0 0 1/G_LT];
 
 if tipo_lamina == 1
@@ -29,8 +27,9 @@ end
 m = cosd(angle); 
 n = sind(angle);
 
-T_sigma = [m^2 n^2 2*m*n; n^2 m^2 -2*m*n; -m*n m*n m^2-n^2];
-T_epsilon_inv = [m^2 n^2 -m*n; n^2 m^2 m*n; 2*m*n -2*m*n m^2-n^2];
+angle
+T_sigma = [m^2 n^2 2*m*n; n^2 m^2 -2*m*n; -m*n m*n m^2-n^2]
+T_epsilon_inv = [m^2 n^2 -m*n; n^2 m^2 m*n; 2*m*n -2*m*n m^2-n^2]
 
 Q_lamina_novo_inv = T_epsilon_inv*Q_inv*T_sigma;
 Q_lamina_novo = inv(Q_lamina_novo_inv);
