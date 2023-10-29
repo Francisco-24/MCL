@@ -208,7 +208,7 @@ qsi_G = 1+40*Vf^10;
 niu_G = ((Gf/Gm)-1)/((Gf/Gm)+qsi_G);
 
 G_LT_HT = Gm*(1+qsi_G*niu_G*Vf)/(1-niu_G*Vf);
-Props_fibra = [E_L E_T_HT v_LT v_TL_HT G_LT_HT];
+Props_fibra_HT = [E_L E_T_HT v_LT v_TL_HT G_LT_HT];
 
 %Q inversa
 Q_inv_HT = [1/E_L -v_TL_HT/E_T_HT 0; -v_LT/E_L 1/E_T_HT 0; 0 0 1/G_LT_HT];
@@ -217,7 +217,7 @@ Q_HT = inv(Q_inv_HT)/10^3;
 Q_lamina_HT = zeros(3,3,laminas);
 
 for i=1:laminas
-    Q_lamina_HT(:,:,i) = matriz_Q_novo(n(i), Props_fibra);
+    Q_lamina_HT(:,:,i) = matriz_Q_novo(n(i), Props_fibra_HT);
 end
 
 %Matriz ABD
@@ -228,9 +228,9 @@ end
  for i=1:3
      for j=1:3
          for k=1:laminas
-                 A_HT(i,j)=A_HT(i,j) + Q_lamina(i,j,k)*(z(k+1)-z(k));
-                 B_HT(i,j)=B_HT(i,j) + (Q_lamina(i,j,k)/2)*(z(k+1)^2-z(k)^2);
-                 D_HT(i,j)=D_HT(i,j) + (Q_lamina(i,j,k)/3)*(z(k+1)^3-z(k)^3);
+                 A_HT(i,j)=A_HT(i,j) + Q_lamina_HT(i,j,k)*(z(k+1)-z(k));
+                 B_HT(i,j)=B_HT(i,j) + (Q_lamina_HT(i,j,k)/2)*(z(k+1)^2-z(k)^2);
+                 D_HT(i,j)=D_HT(i,j) + (Q_lamina_HT(i,j,k)/3)*(z(k+1)^3-z(k)^3);
          end
      end
  end
@@ -244,3 +244,8 @@ A_GPa_HT = A_HT*10^-3;
 D_GPa_HT = D_HT*10^-3;
 
 
+%Cálculo Young flexão
+Efx_HT = 12/(D_inverse_HT(1,1)*espessura^3);
+
+
+%% Ponto 7 
