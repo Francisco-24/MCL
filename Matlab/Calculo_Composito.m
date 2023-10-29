@@ -15,6 +15,9 @@ laminas = 24;
 %Empilhamento C
 n = [2 2 2 2 1 1 1 1 3 3 3 4 4 3 3 3 1 1 1 1 2 2 2 2];
 
+%Empilhamento E 22/23
+% n = [2 2 2 1 1 1 3 3 3 3 3 4 4 3 3 3 3 3 1 1 1 2 2 2];
+
 %Para testar
 % laminas = 8;
 % n = [4 3 2 1 1 2 3 4];
