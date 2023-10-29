@@ -166,9 +166,7 @@ b = 57.20;
 Nx = 8000/b;
 Ny = 0;
 Nxy = 0;
-Mx = 0;
-My = 0;
-Mxy = 0;
+
 
 F = [Nx Ny Nxy]';
 
@@ -312,3 +310,77 @@ plot(tensoes_lamxy,z_aux)
 
 %% Ponto 8
 
+angle = [0 90 45 -45];
+T_epsilon = zeros (3,3,4);
+for i=1:4
+    m = cosd(angle(i));
+    n = sind(angle(i));
+
+    T_sigma = [m^2 n^2 2*m*n; n^2 m^2 -2*m*n; -m*n m*n m^2-n^2];
+    T_epsilon_inv = [m^2 n^2 -m*n; n^2 m^2 m*n; 2*m*n -2*m*n m^2-n^2];
+    T_epsilon(:,:,i) = inv(T_epsilon_inv);
+end
+
+S_L = 2580;
+S_T = 45;
+S_LT = 90;
+E_L = Ex;
+E_T = Ey;
+G_LT = Gxy;
+
+P = linspace(8, 50,  1000);
+epsilon1_rot = S_L/E_L;
+epsilon2_rot = S_T/E_T;
+gama12_rot = S_LT/G_LT;
+j=1;
+
+while true
+
+    L = 200;
+    P(j)
+    Mx = P(j)*L/b;
+    My = 0;
+    Mxy = 0;
+    M = [Mx My Mxy]';
+    ks = D\M;
+
+    extensoes_lam = zeros(3,length(z));
+    for i=1:length(z)
+        extensoes_lam(:,i) = z(i)*ks;
+    end
+
+    extensoes_lam_local = zeros(3,16);
+
+    % lamina de 0 graus (está entre o z(13) e o z(14))
+    extensoes_lam_local(:,1) = T_epsilon(:,:,1)*extensoes_lam(:,13);
+    extensoes_lam_local(:,2) = T_epsilon(:,:,1)*extensoes_lam(:,14);
+
+    % laminas de 90 graus (estao entre z(14) e z(17))
+    for i=3:6
+        extensoes_lam_local(:,i) = T_epsilon(:,:,2)*extensoes_lam(:,11+i);
+    end
+
+    % laminas de 45 graus (estao entre z(17) e z(21))
+    for i=7:11
+        extensoes_lam_local(:,i) = T_epsilon(:,:,3)*extensoes_lam(:,10+i);
+    end
+
+    %laminas de -45 graus (estao entre z(21) e z(25)
+    for i=12:16
+        extensoes_lam_local(:,i) = T_epsilon(:,:,4)*extensoes_lam(:,9+i);
+    end
+
+    epsilon1_vec = abs(extensoes_lam_local(1,:));
+    epsilon2_vec = abs(extensoes_lam_local(2,:));
+    gama12_vec = abs(extensoes_lam_local(3,:));
+
+    epsilon1 = max(epsilon1_vec);
+    epsilon2 = max(epsilon2_vec);
+    gama12 = max(gama12_vec);
+
+    if epsilon1>epsilon1_rot || epsilon2>epsilon2_rot || gama12>gama12_rot 
+        break
+    end
+    j = j+1;
+end
+P(j)
