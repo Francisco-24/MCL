@@ -67,8 +67,8 @@ Props_fibra = [E_L E_T v_LT v_TL G_LT];
 
 %% matriz Q
 
-Q_inv = [1/E_L -v_TL/E_T 0; -v_LT/E_L 1/E_T 0; 0 0 1/G_LT];
-Q = inv(Q_inv)*10^-3;
+Q_inv = [1/E_L -v_TL/E_T 0; -v_LT/E_L 1/E_T 0; 0 0 1/G_LT]
+Q = inv(Q_inv)*10^-3
 
 for i=1:laminas
     % Q_lamina(:,:,i) = matriz_Q(n(i), Props_fibra);
@@ -91,9 +91,9 @@ z=[-flip(z),0,z];
  for i=1:3
      for j=1:3
          for k=1:laminas
-                 A(i,j)=A(i,j)+ Q_lamina(i,j,k)*(z(k+1)-z(k));
-                 B(i,j)=B(i,j)+ (Q_lamina(i,j,k)/2)*(z(k+1)^2-z(k)^2);
-                 D(i,j)=D(i,j)+ (Q_lamina(i,j,k)/3)*(z(k+1)^3-z(k)^3);
+                 A(i,j)=A(i,j) + Q_lamina(i,j,k)*(z(k+1)-z(k));
+                 B(i,j)=B(i,j) + (Q_lamina(i,j,k)/2)*(z(k+1)^2-z(k)^2);
+                 D(i,j)=D(i,j) + (Q_lamina(i,j,k)/3)*(z(k+1)^3-z(k)^3);
          end
      end
  end
@@ -108,11 +108,11 @@ D_GPa = D*10^-3;
 
 %% Constantes de Elasticidade do laminado [MPa]
 
-Ex = 1/(espessura*A_inverse(1,1))
+Ex = 1/(espessura*A_inverse(1,1));
 Ey = 1/(espessura*A_inverse(2,2));
 vxy = -A_inverse(2,1)/A_inverse(1,1);
 vyx = vxy*Ey/Ex;
-Gxy = 1/(espessura*A_inverse(3,3))
+Gxy = 1/(espessura*A_inverse(3,3));
 
 Props_laminado = [Ex Ey vxy vyx Gxy];
 
