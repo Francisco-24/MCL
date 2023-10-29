@@ -301,14 +301,10 @@ tensoes_lamxy = [-flip(aux), tensoes_lamxy];
 z_aux = [0.19 0.19 0.38 0.57 0.76 0.76 0.95 1.14 1.33 1.52 1.52 1.71 1.9 2.09 2.28];
 z_aux = [-flip(z_aux) 0 z_aux];
 
-figure
-plot(tensoes_lamx,z_aux)
 
-figure
-plot(tensoes_lamy,z_aux)
 
-figure
-plot(tensoes_lamxy,z_aux)
+
+
 
 %% Ponto 8
 
