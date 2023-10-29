@@ -170,7 +170,7 @@ Mxy = 0;
 F = [Nx Ny Nxy]';
 
 % extensoes = A_inverse * F;
-extensoes_ = A\F;
+extensoes = A\F;
 
 tensoes = zeros(3,laminas);
 
@@ -178,4 +178,16 @@ for i=1:laminas
     tensoes(:,i) = Q_lamina (:,:,i) * extensoes;
 end
 
+aux = [linspace(-2.28,-2.29+0.19*4,4) linspace(-2.29+0.19*4,-0.19*4,4) linspace(-0.19*4,-0.19,3) -0.19];
+aux_ = flip(aux);
+pos_lamina = [aux -aux_];
+
+figure
+plot(tensoes(1,:),pos_lamina)
+
+figure
+plot(tensoes(2,:),pos_lamina)
+
+figure
+plot(tensoes(3,:),pos_lamina)
 
