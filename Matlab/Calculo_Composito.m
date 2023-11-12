@@ -83,9 +83,11 @@ Q_inv = [1/E_L -v_TL/E_T 0; -v_LT/E_L 1/E_T 0; 0 0 1/G_LT];
 Q = inv(Q_inv)/10^3;
 
 Q_lamina = zeros(3,3,laminas);
+Q_laminaGPA = zeros(3,3,laminas);
 
 for i=1:laminas
     Q_lamina(:,:,i) = matriz_Q_novo(n(i), Props_fibra);
+    Q_laminaGPA(:,:,i) = Q_lamina(:,:,i)*10^-3;
 end
 
 %%     Calcular posições das laminas em altura
@@ -241,6 +243,8 @@ D_inverse_HT = inv(D_HT);
 A_GPa_HT = A_HT*10^-3;
 D_GPa_HT = D_HT*10^-3;
 
+%Cálculo Young
+Ex_HT = 1/(espessura*A_inverse_HT(1,1));
 
 %Cálculo Young flexão
 Efx_HT = 12/(D_inverse_HT(1,1)*espessura^3);
@@ -308,7 +312,7 @@ plot(tensoes_lamy,z_aux)
 figure
 plot(tensoes_lamxy,z_aux)
 
-%% Ponto 8
+%% Matrizes T
 
 angle = [0 90 45 -45];
 T_epsilon = zeros (3,3,4);
@@ -321,6 +325,7 @@ for i=1:4
     T_epsilon(:,:,i) = inv(T_epsilon_inv);
 end
 
+%% Ponto 8
 S_L = 2580;
 S_T = 45;
 S_LT = 90;
