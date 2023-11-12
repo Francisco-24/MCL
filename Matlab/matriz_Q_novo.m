@@ -22,6 +22,10 @@ elseif tipo_lamina == 3
     angle= 90;
 elseif tipo_lamina == 4
     angle= 0;
+elseif tipo_lamina == 5
+    angle= 30;
+elseif tipo_lamina == 6
+    angle= - 30;
 end
 
 m = cosd(angle); 
