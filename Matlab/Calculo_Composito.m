@@ -187,12 +187,23 @@ pos_lamina = [aux -aux_];
 
 figure
 plot(tensoes(1,:),pos_lamina)
+title('Tensão no eixo x em função da espessura')
+xlabel('\sigma_x (MPa)')
+ylabel('z (mm)')
+
 
 figure
 plot(tensoes(2,:),pos_lamina)
+title('Tensão no eixo y em função da espessura')
+xlabel('\sigma_y (MPa)')
+ylabel('z (mm)')
+
 
 figure
 plot(tensoes(3,:),pos_lamina)
+title('Tensão no eixo xy em função da espessura')
+xlabel('\tau_{xy} (MPa)')
+ylabel('z (mm)')
 
 
 %% Ponto 6 (Aproximação de Halpin Tsai)
