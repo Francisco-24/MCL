@@ -342,7 +342,7 @@ j=1;
 while true
 
     L = 200;
-    P(j)
+    P(j);
     Mx = P(j)*L/b;
     My = 0;
     Mxy = 0;
@@ -388,4 +388,6 @@ while true
     end
     j = j+1;
 end
+
+j
 P(j)
