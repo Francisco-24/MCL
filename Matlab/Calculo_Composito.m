@@ -271,7 +271,7 @@ Mxy = 0;
 
 M = [Mx My Mxy]';
 
-ks = D\M;
+ks = D_HT\M;
 
 extensoes_lam = zeros(3,length(z));
 for i=1:length(z)
@@ -281,22 +281,22 @@ end
 tensoes_lam = zeros(3,16);
 
 % lamina de 0 graus (está entre o z(13) e o z(14))
-tensoes_lam(:,1) = Q_lamina(:,:,13)*extensoes_lam(:,13);
-tensoes_lam(:,2) = Q_lamina(:,:,13)*extensoes_lam(:,14);
+tensoes_lam(:,1) = Q_lamina_HT(:,:,13)*extensoes_lam(:,13);
+tensoes_lam(:,2) = Q_lamina_HT(:,:,13)*extensoes_lam(:,14);
 
 % laminas de 90 graus (estao entre z(14) e z(17))
 for i=3:6
-    tensoes_lam(:,i) = Q_lamina(:,:,14)*extensoes_lam(:,11+i);
+    tensoes_lam(:,i) = Q_lamina_HT(:,:,14)*extensoes_lam(:,11+i);
 end
 
 % laminas de 45 graus (estao entre z(17) e z(21))
 for i=7:11
-    tensoes_lam(:,i) = Q_lamina(:,:,20)*extensoes_lam(:,10+i);
+    tensoes_lam(:,i) = Q_lamina_HT(:,:,20)*extensoes_lam(:,10+i);
 end
 
 %laminas de -45 graus (estao entre z(21) e z(25)
 for i=12:16
-    tensoes_lam(:,i) = Q_lamina(:,:,21)*extensoes_lam(:,9+i);
+    tensoes_lam(:,i) = Q_lamina_HT(:,:,21)*extensoes_lam(:,9+i);
 end
 
 tensoes_lamx = tensoes_lam(1,:);
@@ -316,12 +316,22 @@ z_aux = [-flip(z_aux) 0 z_aux];
 
 figure
 plot(tensoes_lamx,z_aux)
+title('Tensão no eixo x em função da espessura')
+xlabel('\sigma_x (MPa)')
+ylabel('z (mm)')
 
 figure
 plot(tensoes_lamy,z_aux)
+title('Tensão no eixo y em função da espessura')
+xlabel('\sigma_y (MPa)')
+ylabel('z (mm)')
+
 
 figure
 plot(tensoes_lamxy,z_aux)
+title('Tensão no eixo xy em função da espessura')
+xlabel('\tau_{xy} (MPa)')
+ylabel('z (mm)')
 
 %% Matrizes T
 
