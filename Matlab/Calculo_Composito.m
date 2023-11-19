@@ -256,6 +256,11 @@ D_GPa_HT = D_HT*10^-3;
 
 %Cálculo Young
 Ex_HT = 1/(espessura*A_inverse_HT(1,1));
+Ey_HT = 1/(espessura*A_inverse_HT(2,2));
+vxy_HT = -A_inverse_HT(2,1)/A_inverse_HT(1,1);
+vyx_HT = vxy_HT*Ey_HT/Ex_HT;
+Gxy_HT = 1/(espessura*A_inverse_HT(3,3));
+
 
 %Cálculo Young flexão
 Efx_HT = 12/(D_inverse_HT(1,1)*espessura^3);
@@ -350,9 +355,9 @@ end
 S_L = 2580;
 S_T = 45;
 S_LT = 90;
-E_L = Ex;
-E_T = Ey;
-G_LT = Gxy;
+E_L = Efx;
+E_T = Efy;
+G_LT = Gfxy;
 
 P = linspace(8, 50,  1000);
 epsilon1_rot = S_L/E_L;
@@ -368,7 +373,7 @@ while true
     My = 0;
     Mxy = 0;
     M = [Mx My Mxy]';
-    ks = D\M;
+    ks = D_HT\M;
 
     extensoes_lam = zeros(3,length(z));
     for i=1:length(z)
