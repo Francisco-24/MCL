@@ -264,6 +264,8 @@ Gxy_HT = 1/(espessura*A_inverse_HT(3,3));
 
 %Cálculo Young flexão
 Efx_HT = 12/(D_inverse_HT(1,1)*espessura^3);
+Efy_HT = 12/(D_inverse_HT(2,2)*espessura^3);
+Gfxy_HT = 12/(D_inverse_HT(3,3)*espessura^3);
 
 
 %% Ponto 7 
@@ -355,9 +357,9 @@ end
 S_L = 2580;
 S_T = 45;
 S_LT = 90;
-E_L = Efx;
-E_T = Efy;
-G_LT = Gfxy;
+E_L = Efx_HT;
+E_T = Efy_HT;
+G_LT = Gfxy_HT;
 
 P = linspace(8, 50,  1000);
 epsilon1_rot = S_L/E_L;
