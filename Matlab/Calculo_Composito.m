@@ -15,14 +15,7 @@ laminas = 24;
 %Empilhamento C
 n = [2 2 2 2 1 1 1 1 3 3 3 4 4 3 3 3 1 1 1 1 2 2 2 2];
 
-%Empilhamento E 22/23
-% n = [2 2 2 1 1 1 3 3 3 3 3 4 4 3 3 3 3 3 1 1 1 2 2 2];
-
-%Para testar
-% laminas = 8;
-% n = [4 3 2 1 1 2 3 4];
-
-%% LAMINADO CARBONO T800 COM RESINA EPOXÍDICA
+%% 4.1 LAMINADO CARBONO T800 COM RESINA EPOXÍDICA
 
 %Carbono T800
 ro_carbono = 1754; %Kg/m3$
@@ -48,36 +41,11 @@ E_T = 1/(Vf/E_carbono + Vm/E_resina);
 G_LT = 1/(Vf/Gf + Vm/Gm);
 v_TL = E_T*v_LT/E_L;
 
-%Lamina para testar 
-% E_L = 177800
-% v_LT = 0.27
-% E_T = 11050
-% G_LT = 7600
-% v_TL = E_T*v_LT/E_L
-% hi = 0.14
-
 espessura_lamina = hi;
 espessura = laminas*espessura_lamina; %mm
 Props_fibra = [E_L E_T v_LT v_TL G_LT];
 
-%% LAMINADO PARA TESTAR
-% espessura_lamina = 0.14;
-% 
-% %Preencher Xt,Xc, Yt, Yc, S da ultima lamina
-% strength_val = [1500 1200 50 250 70];
-% 
-% %Preencher caracteristicas 
-% E_L = 177800;
-% E_T = 11050;
-% v_LT = 0.27;
-% v_TL = v_LT*E_T/E_L
-% G_LT = 7600;
-% %G_LN = 2000;
-% %G_TN = 2000;
-% espessura = laminas*espessura_lamina; %mm
-% Props_fibra = [E_L E_T v_LT v_TL G_LT];
-
-%% matriz Q
+%% 4.2 matriz Q
 
 Q_inv = [1/E_L -v_TL/E_T 0; -v_LT/E_L 1/E_T 0; 0 0 1/G_LT];
 Q = inv(Q_inv)/10^3;
@@ -90,7 +58,7 @@ for i=1:laminas
     Q_laminaGPA(:,:,i) = Q_lamina(:,:,i)*10^-3;
 end
 
-%%     Calcular posições das laminas em altura
+%% 4.2 Calcular posições das laminas em altura
 
 z = zeros(1,laminas/2);
 
@@ -100,7 +68,7 @@ end
 
 z=[-flip(z),0,z];
 
-%% matriz ABD
+%% 4.2 matriz ABD
 
  A=zeros(3,3);
  B=zeros(3,3);
@@ -124,7 +92,7 @@ D_inverse = inv(D);
 A_GPa = A*10^-3;
 D_GPa = D*10^-3;
 
-%% Constantes de Elasticidade do laminado [MPa]
+%% 4.3 Constantes de Elasticidade do laminado [MPa]
 
 Ex = 1/(espessura*A_inverse(1,1));
 Ey = 1/(espessura*A_inverse(2,2));
@@ -134,7 +102,7 @@ Gxy = 1/(espessura*A_inverse(3,3));
 
 Props_laminado = [Ex Ey vxy vyx Gxy];
 
-%% Constantes de Elasticidade de Flexão do laminado [MPa]
+%% 4.3 Constantes de Elasticidade de Flexão do laminado [MPa]
 
 Efx = 12/(D_inverse(1,1)*espessura^3);
 Efy = 12/(D_inverse(2,2)*espessura^3);
@@ -142,13 +110,13 @@ vfxy = -D_inverse(2,1)/D_inverse(1,1);
 vfyx = -D_inverse(1,2)/D_inverse(2,2);
 Gfxy = 12/(D_inverse(3,3)*espessura^3);
 
-%% Tensão de rotura para L0=2 m 
+%% 4.4 Tensão de rotura para L0=2 m 
 
 m = 5;
 
 sigma_r_2000 = sigma_r * (200/2000)^(1/m);
 
-%% Fabrico de um painel (1mx1m)
+%% 4.5 Fabrico de um painel (1mx1m) 
 
 espessura;
 ro  = ro_resina*Vm + ro_carbono*Vf;
@@ -160,53 +128,7 @@ massa_fibra = Vf*ro_carbono*Volume;
 massa_fibra_ = Vf*ro_carbono*massa_painel/ro;
 massa_resina = Vm*ro_resina*Volume;
 
-
-%% Ponto 5 experimental
-
-b = 57.20;
-
-Nx = 8000/b;
-Ny = 0;
-Nxy = 0;
-
-
-F = [Nx Ny Nxy]';
-
-% extensoes = A_inverse * F;
-extensoes = A\F;
-
-tensoes = zeros(3,laminas);
-
-for i=1:laminas
-    tensoes(:,i) = Q_lamina (:,:,i) * extensoes;
-end
-
-aux = [linspace(-2.28,-2.29+0.19*4,4) linspace(-2.29+0.19*4,-0.19*4,4) linspace(-0.19*4,-0.19,3) -0.19];
-aux_ = flip(aux);
-pos_lamina = [aux -aux_];
-
-figure
-plot(tensoes(1,:),pos_lamina)
-title('Tensão no eixo x em função da espessura')
-xlabel('\sigma_x (MPa)')
-ylabel('z (mm)')
-
-
-figure
-plot(tensoes(2,:),pos_lamina)
-title('Tensão no eixo y em função da espessura')
-xlabel('\sigma_y (MPa)')
-ylabel('z (mm)')
-
-
-figure
-plot(tensoes(3,:),pos_lamina)
-title('Tensão no eixo xy em função da espessura')
-xlabel('\tau_{xy} (MPa)')
-ylabel('z (mm)')
-
-
-%% Ponto 6 (Aproximação de Halpin Tsai)
+%% 4.6 Aproximação de Halpin Tsai
 %Propriedades
 qsi_E = 2;
 niu_E = ((E_carbono/E_resina)-1)/((E_carbono/E_resina)+qsi_E);
@@ -268,7 +190,52 @@ Efy_HT = 12/(D_inverse_HT(2,2)*espessura^3);
 Gfxy_HT = 12/(D_inverse_HT(3,3)*espessura^3);
 
 
-%% Ponto 7 
+%% 5.3 Tensões ao longo da espessura do laminado - ensaio de tração
+
+b = 57.20;
+
+Nx = 8000/b;
+Ny = 0;
+Nxy = 0;
+
+
+F = [Nx Ny Nxy]';
+
+% extensoes = A_inverse * F;
+extensoes = A\F;
+
+tensoes = zeros(3,laminas);
+
+for i=1:laminas
+    tensoes(:,i) = Q_lamina (:,:,i) * extensoes;
+end
+
+aux = [linspace(-2.28,-2.29+0.19*4,4) linspace(-2.29+0.19*4,-0.19*4,4) linspace(-0.19*4,-0.19,3) -0.19];
+aux_ = flip(aux);
+pos_lamina = [aux -aux_];
+
+figure
+plot(tensoes(1,:),pos_lamina)
+title('Tensão no eixo x em função da espessura')
+xlabel('\sigma_x (MPa)')
+ylabel('z (mm)')
+
+
+figure
+plot(tensoes(2,:),pos_lamina)
+title('Tensão no eixo y em função da espessura')
+xlabel('\sigma_y (MPa)')
+ylabel('z (mm)')
+
+
+figure
+plot(tensoes(3,:),pos_lamina)
+title('Tensão no eixo xy em função da espessura')
+xlabel('\tau_{xy} (MPa)')
+ylabel('z (mm)')
+
+
+%% 7.2 Tensões ao longo da espessura do laminado - ensaio de flexão
 P = 9;
 L = 200;
 
@@ -353,7 +320,8 @@ for i=1:4
     T_epsilon(:,:,i) = inv(T_epsilon_inv);
 end
 
-%% Ponto 8
+%% 8 Deformação máxima
+
 S_L = 2580;
 S_T = 45;
 S_LT = 90;
@@ -416,6 +384,49 @@ while true
     end
     j = j+1;
 end
+
+extensoes_lam_localx = extensoes_lam_local(1,:);
+aux = extensoes_lam_localx(2:16);
+extensoes_lam_localx = [-flip(aux), extensoes_lam_localx];
+
+
+extensoes_lam_localy = extensoes_lam_local(2,:);
+aux = extensoes_lam_localy(2:16);
+extensoes_lam_localy = [-flip(aux), extensoes_lam_localy];
+
+extensoes_lam_localxy = extensoes_lam_local(3,:);
+aux = extensoes_lam_localxy(2:16);
+extensoes_lam_localxy = [-flip(aux), extensoes_lam_localxy];
+
+figure
+plot(extensoes_lam_localx,z_aux)
+hold on
+xline(epsilon1_rot)
+hold on
+xline(-epsilon1_rot)
+title('Extensão 1 no eixo referencial local de cada lâmina em função da espessura')
+xlabel('\epsilon_x')
+ylabel('z (mm)')
+
+figure
+plot(extensoes_lam_localy,z_aux)
+hold on
+xline(epsilon2_rot)
+hold on
+xline(-epsilon2_rot)
+title('Extensão 2 no referencial local de cada lâmina em função da espessura')
+xlabel('\epsilon_x')
+ylabel('z (mm)')
+
+figure
+plot(extensoes_lam_localxy,z_aux)
+hold on
+xline(gama12_rot)
+hold on
+xline(-gama12_rot)
+title('Distorção no referencial local de cada lâmina em função da espessura')
+xlabel('\epsilon_x')
+ylabel('z (mm)')
 
 j
 P(j)
