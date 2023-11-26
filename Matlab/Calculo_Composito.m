@@ -329,7 +329,7 @@ E_L = Efx_HT;
 E_T = Efy_HT;
 G_LT = Gfxy_HT;
 
-P = linspace(8, 50,  1000);
+P = linspace(8, 50,  1500);
 epsilon1_rot = S_L/E_L;
 epsilon2_rot = S_T/E_T;
 gama12_rot = S_LT/G_LT;
@@ -430,3 +430,4 @@ ylabel('z (mm)')
 
 j
 P(j)
+Mx = P(j)*L/b
