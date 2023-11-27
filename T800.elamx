@@ -78,7 +78,7 @@
                 <n_x>0.0</n_x>
                 <n_y>0.0</n_y>
                 <n_xy>0.0</n_xy>
-                <m_x>123.81</m_x>
+                <m_x>763.0</m_x>
                 <m_y>0.0</m_y>
                 <m_xy>0.0</m_xy>
                 <deltat>0.0</deltat>
@@ -89,12 +89,12 @@
                 <useStrain3>false</useStrain3>
                 <useStrain4>false</useStrain4>
                 <useStrain5>false</useStrain5>
-                <epsilon_x>-3.335250410354026E-19</epsilon_x>
-                <epsilon_y>2.747609449282902E-19</epsilon_y>
-                <gamma_xy>7.856266309701154E-22</gamma_xy>
-                <kappa_x>5.991104593967261E-4</kappa_x>
-                <kappa_y>-4.067514252378453E-4</kappa_y>
-                <kappa_xy>7.445209415143376E-5</kappa_xy>
+                <epsilon_x>-2.9260066603111418E-18</epsilon_x>
+                <epsilon_y>2.3504073273034812E-18</epsilon_y>
+                <gamma_xy>-7.465167817936506E-19</gamma_xy>
+                <kappa_x>0.0053843108218830016</kappa_x>
+                <kappa_y>-0.00388132546547344</kappa_y>
+                <kappa_xy>6.377603616329275E-4</kappa_xy>
             </calculation>
             <deformation name="Plate Deformation">
                 <length>200.0</length>
@@ -116,9 +116,9 @@
     <materials>
         <material class="de.elamx.laminate.DefaultMaterial" name="Carbono T800" uuid="0e7322c6-5810-4e4b-867b-1169525268ff">
             <Epar>175800.0</Epar>
-            <Enor>22609.0</Enor>
+            <Enor>10994.0</Enor>
             <nue12>0.37</nue12>
-            <G>6588.0</G>
+            <G>3929.7</G>
             <G13>0.0</G13>
             <G23>0.0</G23>
             <rho>1.754E-9</rho>
@@ -142,12 +142,12 @@
             <de.elamx.laminate.addFailureCriteriaAnsys.AnsysLaRC03.g1c>0.28</de.elamx.laminate.addFailureCriteriaAnsys.AnsysLaRC03.g1c>
             <de.elamx.laminate.addFailureCriteria.Rotem.rmt>50.0</de.elamx.laminate.addFailureCriteria.Rotem.rmt>
             <de.elamx.laminate.addFailureCriteriaAutodesk.AutodeskTsaiWu.f12star>-0.5</de.elamx.laminate.addFailureCriteriaAutodesk.AutodeskTsaiWu.f12star>
-            <de.elamx.laminate.addFailureCriteria.MaxStrain.eps_x>0.0987</de.elamx.laminate.addFailureCriteria.MaxStrain.eps_x>
-            <de.elamx.laminate.addFailureCriteria.MaxStrain.eps_y>0.0016</de.elamx.laminate.addFailureCriteria.MaxStrain.eps_y>
+            <de.elamx.laminate.addFailureCriteria.MaxStrain.eps_x>0.01468</de.elamx.laminate.addFailureCriteria.MaxStrain.eps_x>
+            <de.elamx.laminate.addFailureCriteria.MaxStrain.eps_y>0.004094</de.elamx.laminate.addFailureCriteria.MaxStrain.eps_y>
             <de.elamx.laminate.addFailureCriteriaAbaqus.AbaqusTsaiWu.f12star>-0.5</de.elamx.laminate.addFailureCriteriaAbaqus.AbaqusTsaiWu.f12star>
             <de.elamx.laminate.addFailureCriteriaLSDYNA.LSDYNATsaiWu.beta>0.0</de.elamx.laminate.addFailureCriteriaLSDYNA.LSDYNATsaiWu.beta>
             <de.elamx.laminate.addFailureCriteria.Rotem.rmc>50.0</de.elamx.laminate.addFailureCriteria.Rotem.rmc>
-            <de.elamx.laminate.addFailureCriteria.MaxStrain.gamma_xy>0.0023</de.elamx.laminate.addFailureCriteria.MaxStrain.gamma_xy>
+            <de.elamx.laminate.addFailureCriteria.MaxStrain.gamma_xy>0.02799</de.elamx.laminate.addFailureCriteria.MaxStrain.gamma_xy>
             <de.elamx.laminate.addFailureCriteriaLSDYNA.LSDYNADaimlerCamanho.g2c>0.79</de.elamx.laminate.addFailureCriteriaLSDYNA.LSDYNADaimlerCamanho.g2c>
             <de.elamx.laminate.addFailureCriteria.FMC.muesp>0.15</de.elamx.laminate.addFailureCriteria.FMC.muesp>
             <de.elamx.laminate.addFailureCriteriaAutodesk.AutodeskTsaiWu.sigbiax>0.0</de.elamx.laminate.addFailureCriteriaAutodesk.AutodeskTsaiWu.sigbiax>
