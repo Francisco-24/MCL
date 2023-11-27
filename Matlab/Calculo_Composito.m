@@ -255,22 +255,22 @@ end
 tensoes_lam = zeros(3,16);
 
 % lamina de 0 graus (está entre o z(13) e o z(14))
-tensoes_lam(:,1) = Q_lamina_HT(:,:,13)*extensoes_lam(:,13);
-tensoes_lam(:,2) = Q_lamina_HT(:,:,13)*extensoes_lam(:,14);
+tensoes_lam(:,1) = Q_lamina(:,:,13)*extensoes_lam(:,13);
+tensoes_lam(:,2) = Q_lamina(:,:,13)*extensoes_lam(:,14);
 
 % laminas de 90 graus (estao entre z(14) e z(17))
 for i=3:6
-    tensoes_lam(:,i) = Q_lamina_HT(:,:,14)*extensoes_lam(:,11+i);
+    tensoes_lam(:,i) = Q_lamina(:,:,14)*extensoes_lam(:,11+i);
 end
 
 % laminas de 45 graus (estao entre z(17) e z(21))
 for i=7:11
-    tensoes_lam(:,i) = Q_lamina_HT(:,:,20)*extensoes_lam(:,10+i);
+    tensoes_lam(:,i) = Q_lamina(:,:,20)*extensoes_lam(:,10+i);
 end
 
 %laminas de -45 graus (estao entre z(21) e z(25)
 for i=12:16
-    tensoes_lam(:,i) = Q_lamina_HT(:,:,21)*extensoes_lam(:,9+i);
+    tensoes_lam(:,i) = Q_lamina(:,:,21)*extensoes_lam(:,9+i);
 end
 
 tensoes_lamx = tensoes_lam(1,:);
@@ -325,11 +325,13 @@ end
 S_L = 2580;
 S_T = 45;
 S_LT = 90;
-E_L = Efx_HT;
-E_T = Efy_HT;
-G_LT = Gfxy_HT;
 
-P = linspace(8, 50,  1500);
+E_L = Vm*E_resina + Vf*E_carbono;
+E_T = 1/(Vf/E_carbono + Vm/E_resina);
+G_LT = 1/(Vf/Gf + Vm/Gm);
+
+
+P = linspace(8, 500,  1500);
 epsilon1_rot = S_L/E_L;
 epsilon2_rot = S_T/E_T;
 gama12_rot = S_LT/G_LT;
@@ -343,7 +345,7 @@ while true
     My = 0;
     Mxy = 0;
     M = [Mx My Mxy]';
-    ks = D_HT\M;
+    ks = D\M;
 
     extensoes_lam = zeros(3,length(z));
     for i=1:length(z)
