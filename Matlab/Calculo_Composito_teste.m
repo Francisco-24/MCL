@@ -4,7 +4,7 @@ clc
 
 %% INPUTS
 % Preencher
-laminas = 8;
+laminas = 24;
 
 % Preencher o seguinte vetor:
 % 1 -> camada de carbono 45 graus
@@ -12,8 +12,8 @@ laminas = 8;
 % 3 -> camada de carbono 90 graus
 % 4 -> camada de carbono 0 graus
 
-%Empilhamento ex C7
-n = [5 6 4 4 4 4 6 5];
+%Empilhamento 
+n = [2 3 1 4 2 2 3 3 1 1 4 4 4 4 1 1 3 3 2 2 4 1 3 2];
 
 %Empilhamento E 22/23
 % n = [2 2 2 1 1 1 3 3 3 3 3 4 4 3 3 3 3 3 1 1 1 2 2 2];
@@ -25,12 +25,12 @@ n = [5 6 4 4 4 4 6 5];
 %% LAMINADO CARBONO T800 COM RESINA EPOXÍDICA
 
 %Carbono T800
-ro_carbono = 1754; %Kg/m3$
-E_carbono = 290000; %MPa%
+ro_carbono = 1790; %Kg/m3$
+E_carbono = 300000; %MPa%
 v_carbono = 0.35;
-sigma_r = 2.8; %L0 = 200mm$
-gramagem = 200;
-hi = 0.19;
+sigma_r = 3.1; %L0 = 200mm$
+gramagem = 145;
+hi = 0.135;
 Vf = 0.6;
 Gf = E_carbono/(2*(1+v_carbono));
 
@@ -42,40 +42,16 @@ Vm = 0.4;
 Gm = E_resina/(2*(1+v_resina));
 
 %Lamina
-E_L = Vm*E_resina + Vf*E_carbono;
-v_LT = Vf*v_carbono + Vm*v_resina;
-E_T = 1/(Vf/E_carbono + Vm/E_resina);
-G_LT = 1/(Vf/Gf + Vm/Gm);
-v_TL = E_T*v_LT/E_L;
-
-%Lamina para testar 
-E_L = 140000
-v_LT = 0.28
-E_T = 10000
-G_LT = 3800
+E_L = Vm*E_resina + Vf*E_carbono
+v_LT = Vf*v_carbono + Vm*v_resina
+E_T = 1/(Vf/E_carbono + Vm/E_resina)
+G_LT = 1/(Vf/Gf + Vm/Gm)
 v_TL = E_T*v_LT/E_L
-hi = 0.14
 
 espessura_lamina = hi;
 espessura = laminas*espessura_lamina; %mm
 Props_fibra = [E_L E_T v_LT v_TL G_LT];
 
-%% LAMINADO PARA TESTAR
-% espessura_lamina = 0.14;
-% 
-% %Preencher Xt,Xc, Yt, Yc, S da ultima lamina
-% strength_val = [1500 1200 50 250 70];
-% 
-% %Preencher caracteristicas 
-% E_L = 177800;
-% E_T = 11050;
-% v_LT = 0.27;
-% v_TL = v_LT*E_T/E_L
-% G_LT = 7600;
-% %G_LN = 2000;
-% %G_TN = 2000;
-% espessura = laminas*espessura_lamina; %mm
-% Props_fibra = [E_L E_T v_LT v_TL G_LT];
 
 %% matriz Q
 
@@ -136,11 +112,11 @@ Props_laminado = [Ex Ey vxy vyx Gxy];
 
 %% Constantes de Elasticidade de Flexão do laminado [MPa]
 
-Efx = 12/(D_inverse(1,1)*espessura^3);
-Efy = 12/(D_inverse(2,2)*espessura^3);
-vfxy = -D_inverse(2,1)/D_inverse(1,1);
-vfyx = -D_inverse(1,2)/D_inverse(2,2);
-Gfxy = 12/(D_inverse(3,3)*espessura^3);
+Efx = 12/(D_inverse(1,1)*espessura^3)
+Efy = 12/(D_inverse(2,2)*espessura^3)
+vfxy = -D_inverse(2,1)/D_inverse(1,1)
+vfyx = -D_inverse(1,2)/D_inverse(2,2)
+Gfxy = 12/(D_inverse(3,3)*espessura^3)
 
 %% Tensão de rotura para L0=2 m 
 
@@ -326,64 +302,3 @@ for i=1:6
     T_epsilon(:,:,i) = inv(T_epsilon_inv);
 end
 
-%% Ponto 8
-S_L = 1200;
-S_T = 55;
-S_LT = 70;
-E_L = 140000;
-E_T = 10000;
-G_LT = 3800;
-b = 50
-
-P = linspace(10,30,50);
-epsilon1_rot = S_L/E_L;
-epsilon2_rot = S_T/E_T;
-gama12_rot = S_LT/G_LT;
-j=1;
-
-while true
-
-    L = 180;
-    P(j)
-    Mx = P(j)*L/b;
-    My = 0;
-    Mxy = 0;
-    M = [Mx My Mxy]';
-    ks = D\M;
-
-    extensoes_lam = zeros(3,length(z));
-    for i=1:length(z)
-        extensoes_lam(:,i) = z(i)*ks;
-    end
-
-    extensoes_lam_local = zeros(3,7);
-
-    % lamina de 30 graus (está entre o z(8) e o z(9))
-    extensoes_lam_local(:,1) = T_epsilon(:,:,5)*extensoes_lam(:,9);
-    extensoes_lam_local(:,2) = T_epsilon(:,:,5)*extensoes_lam(:,8);
-
-    % laminas de -30 graus (estao entre z(7) e z(8))
-    
-    extensoes_lam_local(:,3) = T_epsilon(:,:,6)*extensoes_lam(:,8);
-    extensoes_lam_local(:,4) = T_epsilon(:,:,6)*extensoes_lam(:,7);
-
-    % laminas de 0 graus (estao entre z(5) e z(7))
-    
-    extensoes_lam_local(:,5) = T_epsilon(:,:,1)*extensoes_lam(:,7);    
-    extensoes_lam_local(:,6) = T_epsilon(:,:,1)*extensoes_lam(:,6);
-    extensoes_lam_local(:,7) = T_epsilon(:,:,1)*extensoes_lam(:,5);
-
-    epsilon1_vec = abs(extensoes_lam_local(1,:));
-    epsilon2_vec = abs(extensoes_lam_local(2,:));
-    gama12_vec = abs(extensoes_lam_local(3,:));
-
-    epsilon1 = max(epsilon1_vec);
-    epsilon2 = max(epsilon2_vec);
-    gama12 = max(gama12_vec);
-
-    if epsilon1>epsilon1_rot || epsilon2>epsilon2_rot || gama12>gama12_rot 
-        break
-    end
-    j = j+1;
-end
-P(j)

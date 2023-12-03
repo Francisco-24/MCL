@@ -331,7 +331,7 @@ E_T = 1/(Vf/E_carbono + Vm/E_resina);
 G_LT = 1/(Vf/Gf + Vm/Gm);
 
 
-P = linspace(8, 500,  1500);
+P = linspace(5, 500, 2500);
 epsilon1_rot = S_L/E_L;
 epsilon2_rot = S_T/E_T;
 gama12_rot = S_LT/G_LT;
