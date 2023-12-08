@@ -193,7 +193,6 @@ Gfxy_HT = 12/(D_inverse_HT(3,3)*espessura^3);
 %% 5.3 Tensões ao longo da espessura do laminado - ensaio de tração
 
 b = 57.20;
-
 Nx = 8000/b;
 Ny = 0;
 Nxy = 0;
@@ -238,14 +237,14 @@ ylabel('z (mm)')
 %% 7.2 Tensões ao longo da espessura do laminado - ensaio de flexão
 P = 9;
 L = 200;
-
+b= 57.20;
 Mx = P*L/b;
 My = 0;
 Mxy = 0;
 
 M = [Mx My Mxy]';
 
-ks = D_HT\M;
+ks = D\M;
 
 extensoes_lam = zeros(3,length(z));
 for i=1:length(z)

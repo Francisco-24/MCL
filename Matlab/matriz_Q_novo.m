@@ -28,6 +28,7 @@ elseif tipo_lamina == 6
     angle= - 30;
 end
 
+angle
 m = cosd(angle); 
 n = sind(angle);
 
