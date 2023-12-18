@@ -1,0 +1,19 @@
+
+
+
+
+
+PreMat for HEXA8 Elements
+_______________________________________________________
+
+Total number of different solids   nsolix =    1
+
+
+Solid #   1   _______________
+
+
+could not compute homogenized coeficients
+for solid material number =     1
+please check data
+
+

@@ -1,0 +1,26 @@
+ ***************************************************
+ premat.f,v 3.24 2018-01-29 17:49:47
+ ***************************************************
+ 
+ premat3d date = 2019-11-27  time = 09h 35m 48.961s
+ ***************************************************
+ ncar, ncarf =            7           9
+ filen  = so00001                                           
+ filenf = res/probi                                         
+  filenf = res/probiso00001.txt                              
+ Cell type =         212   imat =            0
+ Material  1 Constants - E= 0.1000E+01   v= 0.3000E+00    beta=0.0000E+00
+ Material  2 Constants - E= 0.1000E+02   v= 0.3000E+00    beta=0.0000E+00
+N=    2     A/B=0.1000E+01     A1/B1=0.1730E+01     DENS=0.6000E+00
+REFINEMENT-IAN=  2     NODE =  4     IPROC=  0     ixyz=
+  Fiber Orientation (0-z,1-x,2-y) =           1
+CN= 0.785400126875756E+00
+A= 0.437018825968398E+00   B= 0.437018825968398E+00   AD= 0.657647321898295E+00   BD= 0.380142960634853E+00
+!?-STOP- FOR THE GIVEN VALUES AO A,B,DEN,A/B,A1/B1,N
+ IT IS NOT POSSIBLE TO FIND A RECTANGULAR THAT CONTAINS
+ THIS FIBER. INCREASE N, OR CHANGE VALUES
+  An error ocured in premesh IERR=          99
+
+
+THERE WAS AN ERROR IN PREMESH. NOTHING WAS DONE
+IERR= 99

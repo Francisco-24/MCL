@@ -1,0 +1,71 @@
+    0
+
+
+
+    1                                                 # of different beam cross setions
+   12                                                 # of nodes for cross sct.
+    0.        0.                                      center of torsion
+    1   -.5       -.5                                 coordinates of nodes
+    2    .5       -.5
+    3   -.5       -.4
+    4    .5       -.4
+    5   -.5        .4
+    6    .5        .4
+    7   -.5        .5
+    8    .5        .5
+    9   -.1       -.4
+   10    .1       -.4
+   11   -.1        .4
+   12    .1        .4
+    3                                                 # of subsections
+    1    1    1    2    4    3                        conectivities for subsection elements
+    2    2    9   10   12   11
+    3    3    5    6    8    7
+    3                                                 # of materials
+HOMO                                                  type of material
+    1                                                 type of microstructure
+400.         .3                                       E,v for fiber
+ 72.         .3333                                       E,v for matrix
+    2    1   1.        1.         .5                  n,ian,a/b,a0/b0,dens
+-45.         0.        0.                             angle of orietation of fibers
+ISOT                                                  type of material
+   72.        0.3333   30.                            E, v and angle for material 
+    0.        0.        0.
+HOMO                                                  type of material
+    1                                                 type of microstructure
+400.         .3                                       E,v for fiber
+ 72.         .3333                                       E,v for matrix
+    2    1   1.        1.         .5                  n,ian,a/b,a0/b0,dens
+ 45.         0.        0.                             angle of orietation of fibers
+
+
+
+    0
+
+
+    1                                                 # of different beam cross setions
+    6                                                 # of nodes for cross sct.
+    0.        0.                                      center of torsion
+    1   -.5        -.5                                coordinates of nodes
+    2   -.5        0. 
+    3   -.5         .5
+    4    .5        -.5
+    5    .5        0. 
+    6    .5         .5
+    2                                                 # of subsections
+    1    1    1    4    5    2                        conectivities for subsection elements
+    2    2    2    5    6    3
+    2                                                 # of materials
+HOMO                                                  type of material
+    1                                                 type of microstructure
+400.         .3                                       E,v for fiber
+ 72.         .3333                                       E,v for matrix
+    2    1   1.        1.         .5                  n,ian,a/b,a0/b0,dens
+-45.         0.        0.                             angle of orietation of fibers
+HOMO                                                  type of material
+    1                                                 type of microstructure
+400.         .3                                       E,v for fiber
+ 72.         .3333                                       E,v for matrix
+    2    1   1.        1.         .5                  n,ian,a/b,a0/b0,dens
+ 45.         0.        0.                             angle of orietation of fibers
+
