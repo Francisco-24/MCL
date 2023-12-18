@@ -18,10 +18,10 @@ n = [2 2 2 2 1 1 1 1 3 3 3 4 4 3 3 3 1 1 1 1 2 2 2 2];
 %% 4.1 LAMINADO CARBONO T800 COM RESINA EPOXÍDICA
 
 %Carbono T800
-ro_carbono = 1754; %Kg/m3$
-E_carbono = 290000; %MPa%
+ro_carbono = 1754; 
+E_carbono = 290000; 
 v_carbono = 0.35;
-sigma_r = 2.8; %L0 = 200mm$
+sigma_r = 2.8; 
 gramagem = 200;
 hi = 0.19;
 Vf = 0.6;
@@ -42,7 +42,7 @@ G_LT = 1/(Vf/Gf + Vm/Gm);
 v_TL = E_T*v_LT/E_L;
 
 espessura_lamina = hi;
-espessura = laminas*espessura_lamina; %mm
+espessura = laminas*espessura_lamina; 
 Props_fibra = [E_L E_T v_LT v_TL G_LT];
 
 %% 4.2 matriz Q
@@ -54,7 +54,7 @@ Q_lamina = zeros(3,3,laminas);
 Q_laminaGPA = zeros(3,3,laminas);
 
 for i=1:laminas
-    Q_lamina(:,:,i) = matriz_Q_novo(n(i), Props_fibra);
+    Q_lamina(:,:,i) = matriz_Q(n(i), Props_fibra);
     Q_laminaGPA(:,:,i) = Q_lamina(:,:,i)*10^-3;
 end
 
@@ -100,7 +100,7 @@ vxy = -A_inverse(2,1)/A_inverse(1,1);
 vyx = vxy*Ey/Ex;
 Gxy = 1/(espessura*A_inverse(3,3));
 
-Props_laminado = [Ex Ey vxy vyx Gxy];
+Props_laminado = [Ex Ey vxy vyx Gxy]
 
 %% 4.3 Constantes de Elasticidade de Flexão do laminado [MPa]
 
@@ -112,9 +112,9 @@ Gfxy = 12/(D_inverse(3,3)*espessura^3);
 
 %% 4.4 Tensão de rotura para L0=2 m 
 
-m = 5;
 
-sigma_r_2000 = sigma_r * (200/2000)^(1/m);
+
+sigma_r_2000 = sigma_r * (200/2000)^(1/5);
 
 %% 4.5 Fabrico de um painel (1mx1m) 
 
@@ -150,7 +150,7 @@ Q_HT = inv(Q_inv_HT)/10^3;
 Q_lamina_HT = zeros(3,3,laminas);
 
 for i=1:laminas
-    Q_lamina_HT(:,:,i) = matriz_Q_novo(n(i), Props_fibra_HT);
+    Q_lamina_HT(:,:,i) = matriz_Q(n(i), Props_fibra_HT);
 end
 
 %Matriz ABD
@@ -188,7 +188,9 @@ Gxy_HT = 1/(espessura*A_inverse_HT(3,3));
 Efx_HT = 12/(D_inverse_HT(1,1)*espessura^3);
 Efy_HT = 12/(D_inverse_HT(2,2)*espessura^3);
 Gfxy_HT = 12/(D_inverse_HT(3,3)*espessura^3);
-
+vfxy_HT = -D_inverse_HT(2,1)/D_inverse_HT(1,1);
+vfyx_HT1 = -D_inverse_HT(1,2)/D_inverse_HT(2,2);
+vfyx_HT = vfxy_HT*Efy_HT/Efx_HT;
 
 %% 5.3 Tensões ao longo da espessura do laminado - ensaio de tração
 
@@ -235,6 +237,7 @@ ylabel('z (mm)')
 
 
 %% 7.2 Tensões ao longo da espessura do laminado - ensaio de flexão
+
 P = 9;
 L = 200;
 b= 57.20;
@@ -244,7 +247,7 @@ Mxy = 0;
 
 M = [Mx My Mxy]';
 
-ks = D\M;
+ks = D_HT\M;
 
 extensoes_lam = zeros(3,length(z));
 for i=1:length(z)
@@ -254,22 +257,22 @@ end
 tensoes_lam = zeros(3,16);
 
 % lamina de 0 graus (está entre o z(13) e o z(14))
-tensoes_lam(:,1) = Q_lamina(:,:,13)*extensoes_lam(:,13);
-tensoes_lam(:,2) = Q_lamina(:,:,13)*extensoes_lam(:,14);
+tensoes_lam(:,1) = Q_lamina_HT(:,:,13)*extensoes_lam(:,13);
+tensoes_lam(:,2) = Q_lamina_HT(:,:,13)*extensoes_lam(:,14);
 
 % laminas de 90 graus (estao entre z(14) e z(17))
 for i=3:6
-    tensoes_lam(:,i) = Q_lamina(:,:,14)*extensoes_lam(:,11+i);
+    tensoes_lam(:,i) = Q_lamina_HT(:,:,14)*extensoes_lam(:,11+i);
 end
 
 % laminas de 45 graus (estao entre z(17) e z(21))
 for i=7:11
-    tensoes_lam(:,i) = Q_lamina(:,:,20)*extensoes_lam(:,10+i);
+    tensoes_lam(:,i) = Q_lamina_HT(:,:,20)*extensoes_lam(:,10+i);
 end
 
 %laminas de -45 graus (estao entre z(21) e z(25)
 for i=12:16
-    tensoes_lam(:,i) = Q_lamina(:,:,21)*extensoes_lam(:,9+i);
+    tensoes_lam(:,i) = Q_lamina_HT(:,:,21)*extensoes_lam(:,9+i);
 end
 
 tensoes_lamx = tensoes_lam(1,:);
@@ -402,33 +405,35 @@ extensoes_lam_localxy = [-flip(aux), extensoes_lam_localxy];
 figure
 plot(extensoes_lam_localx,z_aux,'LineWidth',2)
 hold on
-xline(epsilon1_rot,'LineWidth',2)
+xline(epsilon1_rot,'-r','LineWidth',2)
 hold on
-xline(-epsilon1_rot,'LineWidth',2)
+xline(-epsilon1_rot,'r','LineWidth',2)
+legend('\epsilon_1','e_L^{rotura}')
 title('Extensão 1 no eixo referencial local de cada lâmina em função da espessura')
-xlabel('\epsilon_x')
+xlabel('\epsilon_1')
 ylabel('z (mm)')
 
 figure
 plot(extensoes_lam_localy,z_aux,'LineWidth',2)
 hold on
-xline(epsilon2_rot,'LineWidth',2)
+xline(epsilon2_rot,'-r','LineWidth',2)
 hold on
-xline(-epsilon2_rot,'LineWidth',2)
+xline(-epsilon2_rot,'-r','LineWidth',2)
+legend('\epsilon_2','e_T^{rotura}')
 title('Extensão 2 no referencial local de cada lâmina em função da espessura')
-xlabel('\epsilon_x')
+xlabel('\epsilon_2')
 ylabel('z (mm)')
 
 figure
 plot(extensoes_lam_localxy,z_aux,'LineWidth',2)
 hold on
-xline(gama12_rot,''LineWidth',2)
+xline(gama12_rot,'-r','LineWidth',2)
 hold on
-xline(-gama12_rot,'LineWidth',2)
+xline(-gama12_rot,'-r','LineWidth',2)
+legend('\gamma_{12}','\gamma_{LT}^{rotura}')
 title('Distorção no referencial local de cada lâmina em função da espessura')
-xlabel('\epsilon_x')
+xlabel('\gamma_{12}')
 ylabel('z (mm)')
 
-j
 P(j)
-Mx = P(j)*L/b
+Mx = P(j)*L/b;
