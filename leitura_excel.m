@@ -73,6 +73,4 @@ elseif n==6
     extensaoXY = table2array(extensaoXY_tab(:,2));
     stressesAA = table2array(stressesAA_tab(:,2));
 
-
-
 end
