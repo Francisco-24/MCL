@@ -88,7 +88,7 @@ vzy = double(solution.vzy);
 S33 = energy_RVE*2/Volume_RVE;
 
 %% Sigma yz Aplicado
-[energy, energy_density, extensaoYZ, stressesYZ] = leitura_excel(4);
+[energy, energy_density, extensaoYZ, stressesYZ] = leitura_excel1(4);
 
 element_volume = energy./energy_density;
 Volume_RVE = sum(element_volume);
@@ -102,7 +102,7 @@ Gyz = sigma_yz/(2*extensaoYZ_med);
 S44 = energy_RVE*2/Volume_RVE;
 
 %% Sigma zx Aplicado
-[energy, energy_density, extensaoZX, stressesZX] = leitura_excel(5);
+[energy, energy_density, extensaoZX, stressesZX] = leitura_excel1(5);
 
 element_volume = energy./energy_density;
 Volume_RVE = sum(element_volume);
@@ -113,10 +113,10 @@ stressesZX_med = sum(stressesZX.*element_volume)/Volume_RVE;
 sigma_zx = 1;
 Gzx = sigma_zx/(2*extensaoZX_med);
 
-S55 = energy_RVE*2/Volume_RVE;
+S55 = energy_RVE*2/Volume_RVE
 
 %% Sigma xy Aplicado
-[energy, energy_density, extensaoXY, stressesXY] = leitura_excel(6);
+[energy, energy_density, extensaoXY, stressesXY] = leitura_excel1(6);
 
 element_volume = energy./energy_density;
 Volume_RVE = sum(element_volume);
@@ -124,8 +124,8 @@ energy_RVE = sum(energy);
 extensaoXY_med = sum(extensaoXY.*element_volume)/Volume_RVE;
 stressesXY_med = sum(stressesXY.*element_volume)/Volume_RVE;
 
-sigma_yz = 1;
-Gxy = sigma_xy/(2*extensaoXY_med);
+sigma_xy = 1;
+Gxy = sigma_xy/(2*extensaoXY_med)*10^-3;
 
 S66 = energy_RVE*2/Volume_RVE;
 
