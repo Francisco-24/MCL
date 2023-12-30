@@ -27,7 +27,7 @@ equations = [eq1, eq2, eq3];
 solution = solve(equations, [Ex,vxy,vxz]);
 disp(solution);
 
-Ex = double(solution.Ex);
+Ex = double(solution.Ex)*10^-3;
 vxy = double(solution.vxy);
 vxz = double(solution.vxz);
 
@@ -54,7 +54,7 @@ equations = [eq4, eq5, eq6];
 solution = solve(equations, [Ey,vyx,vyz]);
 disp(solution);
 
-Ey = double(solution.Ey);
+Ey = double(solution.Ey)*10^-3;
 vyx = double(solution.vyx);
 vyz = double(solution.vyz);
 
@@ -81,7 +81,7 @@ equations = [eq7, eq8, eq9];
 solution = solve(equations, [Ez,vzx,vzy]);
 disp(solution);
 
-Ez = double(solution.Ez);
+Ez = double(solution.Ez)*10^-3;
 vzx = double(solution.vzx);
 vzy = double(solution.vzy);
 
@@ -97,7 +97,7 @@ extensaoYZ_med = sum(extensaoYZ.*element_volume)/Volume_RVE;
 stressesYZ_med = sum(stressesYZ.*element_volume)/Volume_RVE;
 
 sigma_yz = 1;
-Gyz = sigma_yz/(2*extensaoYZ_med);
+Gyz = sigma_yz/(2*extensaoYZ_med)*10^-3;
 
 S44 = energy_RVE*2/Volume_RVE;
 
@@ -111,7 +111,7 @@ extensaoZX_med = sum(extensaoZX.*element_volume)/Volume_RVE;
 stressesZX_med = sum(stressesZX.*element_volume)/Volume_RVE;
 
 sigma_zx = 1;
-Gzx = sigma_zx/(2*extensaoZX_med);
+Gzx = sigma_zx/(2*extensaoZX_med)*10^-3;
 
 S55 = energy_RVE*2/Volume_RVE
 
@@ -178,12 +178,12 @@ energy_RVE = sum(energy);
 
 S23 = (energy_RVE*2/Volume_RVE - S22 - S33)/2;
 
-Ex_energy = 1/S11
-Ey_energy = 1/S22
-Ez_energy = 1/S33
-Gyz_energy = 1/(2*S44)
-Gzx_energy = 1/(2*S55)
-Gxy_energy = 1/(2*S66)
+Ex_energy = 1/S11*10^-3
+Ey_energy = 1/S22*10^-3
+Ez_energy = 1/S33*10^-3
+Gyz_energy = 1/(2*S44)*10^-3
+Gzx_energy = 1/(2*S55)*10^-3
+Gxy_energy = 1/(2*S66)*10^-3
 vyx_energy = -S12*Ey_energy
 vxy_energy = -S21*Ex_energy
 vzx_energy = -S13*Ez_energy
