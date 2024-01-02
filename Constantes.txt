@@ -1,0 +1,54 @@
+Tensão aplicada
+
+Método das médias
+Ex = 73.9063
+Ey = 20.5812
+Ez = 18.2780
+vxy = 0.3118
+vyx = 0.0868
+vxz = 0.4205
+vzx = 0.1040
+vyz = 0.5087
+vzy = 0.4518
+Gxy = 7.3205
+Gzx = 3.9758
+Gyz = 3.2442
+
+Energia
+Ex = 73.8892
+Ey = 20.5717
+Ez = 18.2734
+
+
+
+
+
+Deslocamento aplicado
+
+Energia
+Ex = 176.1647
+Ey = 38.3081
+Ez = 46.6562
+vxy = 0.3631
+vyx = 0.0790
+vxz = 0.3593
+vzx = 0.0952
+vyz = 0.2719
+vzy = 0.3311
+Gxy = 35.8023
+Gzx = 46.1995
+Gyz = 24.1112
+
+Método das médias
+Ex = 176.1148
+Ey = 38.3019
+Ez = 46.6544
+vxy = 0.3633
+vyx = 0.0790
+vxz = 0.3595
+vzx = 0.0952
+vyz = 0.2719
+vzy = 0.3312
+Gxy = 17.9004
+Gzx = 23.1006
+Gyz = 12.0562
