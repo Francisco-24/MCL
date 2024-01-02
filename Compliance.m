@@ -110,7 +110,7 @@ energy_RVE = sum(energy);
 extensaoZX_med = sum(extensaoZX.*element_volume)/Volume_RVE;
 stressesZX_med = sum(stressesZX.*element_volume)/Volume_RVE;
 
-sigma_zx = 1;
+sigma_zx = 1.5;
 Gzx = sigma_zx/(2*extensaoZX_med)*10^-3;
 
 S55 = energy_RVE*2/Volume_RVE;
