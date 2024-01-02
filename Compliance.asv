@@ -145,43 +145,46 @@ Gyz
 
 %% Método da Energia
 
-% % Sigma x e sigma y aplicado
-% M = readmatrix('Final_Tensao/TensaoX+Y/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
-% energy = M(:,16);
-% energy_density = M(:,17);
+% Sigma x e sigma y aplicado
+M = readmatrix('Final_Tensao/TensaoYZ/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
+energy = M(:,16);
+energy_density = M(:,17);
+extensaoBC = M(:,14);
+stressesAA = M(:,8);
 % element_volume = energy./energy_density;
 % Volume_RVE = sum(element_volume);
 % energy_RVE = sum(energy);
 % 
 % S12 = (energy_RVE*2/Volume_RVE - S11 - S22)/2;
-% % 
-% % Sigma x e sigma z aplicado
-% M = readmatrix('Final_Tensao/TensaoX+Z/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
-% energy = M(:,16);
-% energy_density = M(:,17);
+% 
+% %Sigma x e sigma z aplicado
+% energy_tab = readtable('FEM_Decente/TensaoXeZ/energy.csv');
+% energy_density_tab = readtable('FEM_Decente/TensaoXeZ/energy_density.csv');
+% energy = table2array(energy_tab(:,2));
+% energy_density = table2array(energy_density_tab(:,2));
 % element_volume = energy./energy_density;
 % Volume_RVE = sum(element_volume);
 % energy_RVE = sum(energy);
 % 
 % S13 = (energy_RVE*2/Volume_RVE - S11 - S33)/2;
 % 
-% % %Sigma y e sigma z aplicado
-% 
-% M = readmatrix('Final_Tensao/TensaoY+Z/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
-% energy = M(:,16);
-% energy_density = M(:,17);
+% %Sigma y e sigma z aplicado
+% energy_tab = readtable('FEM_Decente/TensaoYeZ/energy.csv');
+% energy_density_tab = readtable('FEM_Decente/TensaoYeZ/energy_density.csv');
+% energy = table2array(energy_tab(:,2));
+% energy_density = table2array(energy_density_tab(:,2));
 % element_volume = energy./energy_density;
 % Volume_RVE = sum(element_volume);
 % energy_RVE = sum(energy);
 % 
 % S23 = (energy_RVE*2/Volume_RVE - S22 - S33)/2;
 % 
-% Ex_energy = 1/S11*10^-3
-% Ey_energy = 1/S22*10^-3
-% Ez_energy = 1/S33*10^-3
-% Gyz_energy = 1/(2*S44)*10^-3
-% Gzx_energy = 1/(2*S55)*10^-3
-% Gxy_energy = 1/(2*S66)*10^-3
+Ex_energy = 1/S11*10^-3
+Ey_energy = 1/S22*10^-3
+Ez_energy = 1/S33*10^-3
+Gyz_energy = 1/(2*S44)*10^-3
+Gzx_energy = 1/(2*S55)*10^-3
+Gxy_energy = 1/(2*S66)*10^-3
 % vyx_energy = -S12*Ey_energy
 % vxy_energy = -S21*Ex_energy
 % vzx_energy = -S13*Ez_energy

@@ -2,7 +2,7 @@ clc
 clear all
 close all
 
-%% Condição Fronteira Extensao 
+%% Condição Fronteira Tensão XX - Energy
 
 syms Ex Ey Ez vxy vyx vxz vzx vyz vzy delta
 
@@ -17,6 +17,8 @@ stressesYY_med_XX = sum(stressesYY.*element_volume)/Volume_RVE;
 stressesZZ_med_XX = sum(stressesZZ.*element_volume)/Volume_RVE;
 extensaoXX_med = sum(extensaoXX.*element_volume)/Volume_RVE;
 
+C11 = energy_RVE/Volume_RVE*2/(0.1^2);
+
 %% Sigma y Aplicado
 [energy, energy_density, stressesXX, stressesYY, stressesZZ, extensaoYY] = leitura_excel_disp(2);
 
@@ -27,6 +29,8 @@ stressesXX_med_YY = sum(stressesXX.*element_volume)/Volume_RVE;
 stressesYY_med_YY = sum(stressesYY.*element_volume)/Volume_RVE;
 stressesZZ_med_YY = sum(stressesZZ.*element_volume)/Volume_RVE;
 extensaoYY_med = sum(extensaoYY.*element_volume)/Volume_RVE;
+
+C22 = energy_RVE/Volume_RVE*2/(0.1^2);
 
 %% Sigma z Aplicado
 [energy, energy_density, stressesXX, stressesYY, stressesZZ, extensaoZZ] = leitura_excel_disp(3);
@@ -39,22 +43,90 @@ stressesYY_med_ZZ = sum(stressesYY.*element_volume)/Volume_RVE;
 stressesZZ_med_ZZ = sum(stressesZZ.*element_volume)/Volume_RVE;
 extensaoZZ_med = sum(extensaoZZ.*element_volume)/Volume_RVE;
 
+C33 = energy_RVE/Volume_RVE*2/(0.1^2);
 
-%% Cálculos
+%% Sigma yz Aplicado
+[energy, energy_density, extensaoYZ, stressesYZ] = leitura_excel_disp1(4);
 
-extensao_xx = 0.1;
-extensao_yy = 0.1;
-extensao_zz = 0.1;
+element_volume = energy./energy_density;
+Volume_RVE = sum(element_volume);
+energy_RVE = sum(energy);
+extensaoYZ_med = sum(extensaoYZ.*element_volume)/Volume_RVE;
+stressesYZ_med = sum(stressesYZ.*element_volume)/Volume_RVE;
 
-eq1 = stressesXX_med_XX == (1-vyz*vzy)/(Ey*Ez*delta)*extensao_xx;
-eq2 = stressesXX_med_YY == (vyx + vzx*vyz)/(Ey*Ez*delta)*extensao_yy;
-eq3 = stressesXX_med_ZZ == (vzx + vyx*vzy)/(Ey*Ez*delta)*extensao_zz;
-eq4 = stressesYY_med_XX == (vxy + vxz*vzy)/(Ez*Ex*delta)*extensao_xx; 
-eq5 = stressesYY_med_YY == (1-vzx*vxz)/(Ez*Ex*delta)*extensao_yy;
-eq6 = stressesYY_med_ZZ == (vzy + vzx*vxy)/(Ez*Ex*delta)*extensao_zz;
-eq7 = stressesZZ_med_XX == (vxz + vxy*vyz)/(Ex*Ey*delta)*extensao_xx;
-eq8 = stressesZZ_med_YY == (vyz + vxz*vyx)/(Ex*Ey*delta)*extensao_yy;
-eq9 = stressesZZ_med_ZZ == (1-vyx*vxy)/(Ex*Ey*delta)*extensao_zz;
+C44 = energy_RVE*2/(Volume_RVE*(0.1^2));
+Gyz = C44/2*10^-3;
+
+%% Sigma zx Aplicado
+[energy, energy_density, extensaoZX, stressesZX] = leitura_excel_disp1(5);
+
+element_volume = energy./energy_density;
+Volume_RVE = sum(element_volume);
+energy_RVE = sum(energy);
+extensaoZX_med = sum(extensaoZX.*element_volume)/Volume_RVE;
+stressesZX_med = sum(stressesZX.*element_volume)/Volume_RVE;
+
+C55 = energy_RVE/Volume_RVE*2/(0.1^2);
+Gzx = C55/2*10^-3;
+
+%% Sigma xy Aplicado
+[energy, energy_density, extensaoXY, stressesXY] = leitura_excel_disp1(6);
+
+element_volume = energy./energy_density;
+Volume_RVE = sum(element_volume);
+energy_RVE = sum(energy);
+extensaoXY_med = sum(extensaoXY.*element_volume)/Volume_RVE;
+stressesXY_med = sum(stressesXY.*element_volume)/Volume_RVE;
+
+C66 = energy_RVE/Volume_RVE*2/(0.1^2);
+Gxy = C66/2*10^-3;
+
+%% Método da Energia
+
+% Disp x e Disp y aplicado
+M = readmatrix('Final_Disp/DispX+Y/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
+energy = M(:,16);
+energy_density = M(:,17);
+element_volume = energy./energy_density;
+Volume_RVE = sum(element_volume);
+energy_RVE = sum(energy);
+
+C12 = (energy_RVE/Volume_RVE*2/(0.1^2) - C11 - C22)/2;
+C21 = C12;
+
+% Disp x e Disp z aplicado
+M = readmatrix('Final_Disp/DispX+Z/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
+energy = M(:,16);
+energy_density = M(:,17);
+element_volume = energy./energy_density;
+Volume_RVE = sum(element_volume);
+energy_RVE = sum(energy);
+
+C13 = (energy_RVE/Volume_RVE*2/(0.1^2) - C11 - C33)/2;
+C31 = C13;
+
+% Disp y e Disp z aplicado
+M = readmatrix('Final_Disp/DispY+Z/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
+energy = M(:,16);
+energy_density = M(:,17);
+element_volume = energy./energy_density;
+Volume_RVE = sum(element_volume);
+energy_RVE = sum(energy);
+
+C23 = (energy_RVE/Volume_RVE*2/(0.1^2) - C22 - C33)/2;
+C32 = C23;
+
+%% Calculos
+
+eq1 = C11 == (1-vyz*vzy)/(Ey*Ez*delta);
+eq2 = C12 == (vyx + vzx*vyz)/(Ey*Ez*delta);
+eq3 = C13 == (vzx + vyx*vzy)/(Ey*Ez*delta);
+eq4 = C21 == (vxy + vxz*vzy)/(Ez*Ex*delta); 
+eq5 = C22 == (1-vzx*vxz)/(Ez*Ex*delta);
+eq6 = C23 == (vzy + vzx*vxy)/(Ez*Ex*delta);
+eq7 = C31 == (vxz + vxy*vyz)/(Ex*Ey*delta);
+eq8 = C32 == (vyz + vxz*vyx)/(Ex*Ey*delta);
+eq9 = C33 == (1-vyx*vxy)/(Ex*Ey*delta);
 eq10 = delta == (1-vxy*vyx - vyz*vzy - vzx*vxz - 2*vxy*vyz*vzx)/(Ex*Ey*Ez);
 
 equations = [eq1, eq2, eq3, eq4, eq5, eq6, eq7, eq8, eq9, eq10];
@@ -71,45 +143,6 @@ vzx = double(solution.vzx);
 vyz = double(solution.vyz);
 vzy = double(solution.vzy);
 
-%% Sigma yz Aplicado
-
-[energy, energy_density, extensaoYZ, stressesYZ] = leitura_excel_disp1(4);
-
-element_volume = energy./energy_density;
-Volume_RVE = sum(element_volume);
-energy_RVE = sum(energy);
-extensaoYZ_med = sum(extensaoYZ.*element_volume)/Volume_RVE;
-stressesYZ_med = sum(stressesYZ.*element_volume)/Volume_RVE;
-
-extensao_yz = 0.1;
-
-Gyz = stressesYZ_med/(2*extensao_yz)*10^-3;
-
-%% Sigma zx Aplicado
-[energy, energy_density, extensaoZX, stressesZX] = leitura_excel_disp1(5);
-
-element_volume = energy./energy_density;
-Volume_RVE = sum(element_volume);
-energy_RVE = sum(energy);
-extensaoZX_med = sum(extensaoZX.*element_volume)/Volume_RVE;
-stressesZX_med = sum(stressesZX.*element_volume)/Volume_RVE;
-
-extensao_zx = 0.1;
-
-Gzx = stressesZX_med/(2*extensao_zx)*10^-3;
-
-%% Sigma xy Aplicado
-[energy, energy_density, extensaoXY, stressesXY] = leitura_excel_disp1(6);
-
-element_volume = energy./energy_density;
-Volume_RVE = sum(element_volume);
-energy_RVE = sum(energy);
-extensaoXY_med = sum(extensaoXY.*element_volume)/Volume_RVE;
-stressesXY_med = sum(stressesXY.*element_volume)/Volume_RVE;
-
-extensao_xy = 0.1;
-Gxy = stressesXY_med/(2*extensao_xy)*10^-3;
-
 %% Valores
 Ex
 Ey
@@ -123,4 +156,3 @@ vzy
 Gxy
 Gzx
 Gyz
-
