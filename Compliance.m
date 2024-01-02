@@ -145,49 +145,77 @@ Gyz
 
 %% Método da Energia
 
-% % Sigma x e sigma y aplicado
-% M = readmatrix('Final_Tensao/TensaoX+Y/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
-% energy = M(:,16);
-% energy_density = M(:,17);
-% element_volume = energy./energy_density;
-% Volume_RVE = sum(element_volume);
-% energy_RVE = sum(energy);
-% 
-% S12 = (energy_RVE*2/Volume_RVE - S11 - S22)/2;
-% % 
-% % Sigma x e sigma z aplicado
-% M = readmatrix('Final_Tensao/TensaoX+Z/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
-% energy = M(:,16);
-% energy_density = M(:,17);
-% element_volume = energy./energy_density;
-% Volume_RVE = sum(element_volume);
-% energy_RVE = sum(energy);
-% 
-% S13 = (energy_RVE*2/Volume_RVE - S11 - S33)/2;
-% 
-% % %Sigma y e sigma z aplicado
-% 
-% M = readmatrix('Final_Tensao/TensaoY+Z/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
-% energy = M(:,16);
-% energy_density = M(:,17);
-% element_volume = energy./energy_density;
-% Volume_RVE = sum(element_volume);
-% energy_RVE = sum(energy);
-% 
-% S23 = (energy_RVE*2/Volume_RVE - S22 - S33)/2;
-% 
-% Ex_energy = 1/S11*10^-3
-% Ey_energy = 1/S22*10^-3
-% Ez_energy = 1/S33*10^-3
-% Gyz_energy = 1/(2*S44)*10^-3
-% Gzx_energy = 1/(2*S55)*10^-3
-% Gxy_energy = 1/(2*S66)*10^-3
-% vyx_energy = -S12*Ey_energy
-% vxy_energy = -S21*Ex_energy
-% vzx_energy = -S13*Ez_energy
-% vxz_energy = -S31*Ex_energy
-% vzy_energy = -S23*Ez_energy
-% vyz_energy = -S32*Ey_energy
-% 
-% 
-% 
+%% Sigma x e sigma y aplicado
+M = readmatrix('Final_Tensao/New/TensaoX+Y/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
+energy = M(:,16);
+energy_density = M(:,17);
+element_volume = energy./energy_density;
+Volume_RVE = sum(element_volume);
+energy_RVE = sum(energy);
+stressesXX = M(:,4);
+stressesYY = M(:,5);
+stressesZZ = M(:,6);
+stressesXX_med = sum(stressesXX.*element_volume)/Volume_RVE;
+stressesYY_med = sum(stressesYY.*element_volume)/Volume_RVE;
+stressesZZ_med = sum(stressesZZ.*element_volume)/Volume_RVE;
+
+S12 = (energy_RVE*2/(Volume_RVE) - S11 - S22*1.5^2)/(2*1.5);
+ 
+%% Sigma x e sigma z aplicado
+M = readmatrix('Final_Tensao/New/TensaoX+Z/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
+energy = M(:,16);
+energy_density = M(:,17);
+element_volume = energy./energy_density;
+Volume_RVE = sum(element_volume);
+energy_RVE = sum(energy);
+stressesXX = M(:,4);
+stressesYY = M(:,5);
+stressesZZ = M(:,6);
+stressesXX_med = sum(stressesXX.*element_volume)/Volume_RVE;
+stressesYY_med = sum(stressesYY.*element_volume)/Volume_RVE;
+stressesZZ_med = sum(stressesZZ.*element_volume)/Volume_RVE;
+
+S13 = (energy_RVE*2/(Volume_RVE) - S11 - S33*1.5^2)/(2*1.5);
+
+%% Sigma y e sigma z aplicado
+
+M = readmatrix('Final_Tensao/New/TensaoY+Z/Total.xlsx', 'Sheet', 'Folha1', 'Range', 'A4:R144862');
+energy = M(:,16);
+energy_density = M(:,17);
+element_volume = energy./energy_density;
+Volume_RVE = sum(element_volume);
+energy_RVE = sum(energy);
+stressesXX = M(:,4);
+stressesYY = M(:,5);
+stressesZZ = M(:,6);
+stressesXX_med = sum(stressesXX.*element_volume)/Volume_RVE;
+stressesYY_med = sum(stressesYY.*element_volume)/Volume_RVE;
+stressesZZ_med = sum(stressesZZ.*element_volume)/Volume_RVE;
+
+
+S23 = (energy_RVE*2/(Volume_RVE*1.5^2) - S22 - S33)/2;
+
+%% Calculos 
+
+S21 = S12;
+S31 = S13;
+S32 = S23;
+
+Ex_energy = 1/S11;
+Ey_energy = 1/S22;
+Ez_energy = 1/S33;
+Gyz_energy = 1/(2*S44)*10^-3
+Gzx_energy = 1/(2*S55)*10^-3
+Gxy_energy = 1/(2*S66)*10^-3
+vyx_energy = -S12*Ey_energy
+vxy_energy = -S21*Ex_energy
+vzx_energy = -S13*Ez_energy
+vxz_energy = -S31*Ex_energy
+vzy_energy = -S23*Ez_energy
+vyz_energy = -S32*Ey_energy
+Ex_energy = 1/S11*10^-3
+Ey_energy = 1/S22*10^-3
+Ez_energy = 1/S33*10^-3
+
+
+
