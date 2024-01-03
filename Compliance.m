@@ -113,7 +113,7 @@ stressesZX_med = sum(stressesZX.*element_volume)/Volume_RVE;
 sigma_zx = 1.5;
 Gzx = sigma_zx/(2*extensaoZX_med)*10^-3;
 
-S55 = energy_RVE*2/Volume_RVE;
+S55 = energy_RVE*2/(Volume_RVE*1.5^2);
 
 %% Sigma xy Aplicado
 [energy, energy_density, extensaoXY, stressesXY] = leitura_excel1(6);
@@ -124,10 +124,10 @@ energy_RVE = sum(energy);
 extensaoXY_med = sum(extensaoXY.*element_volume)/Volume_RVE;
 stressesXY_med = sum(stressesXY.*element_volume)/Volume_RVE;
 
-sigma_xy = 1;
+sigma_xy = 1.5;
 Gxy = sigma_xy/(2*extensaoXY_med)*10^-3;
 
-S66 = energy_RVE*2/Volume_RVE;
+S66 = energy_RVE*2/(Volume_RVE*1.5^2);
 
 %% Valores
 Ex
@@ -204,9 +204,9 @@ S32 = S23;
 Ex_energy = 1/S11;
 Ey_energy = 1/S22;
 Ez_energy = 1/S33;
-Gyz_energy = 1/(2*S44)*10^-3
-Gzx_energy = 1/(2*S55)*10^-3
-Gxy_energy = 1/(2*S66)*10^-3
+Gyz_energy = 1/(S44)*10^-3
+Gzx_energy = 1/(S55)*10^-3
+Gxy_energy = 1/(S66)*10^-3
 vyx_energy = -S12*Ey_energy
 vxy_energy = -S21*Ex_energy
 vzx_energy = -S13*Ez_energy
