@@ -10,49 +10,28 @@ vxz = 0.4205
 vzx = 0.1040
 vyz = 0.5087
 vzy = 0.4518
+Gxy = 6.2422
+Gzx = 5.5569
+Gyz = 4.8663
 
-Gxy = 7.3205
-Gzx = 3.9758
-Gyz = 3.2442
+Energy
+Ex_energy = 73.8892
+Ey_energy = 20.5717
+Ez_energy = 18.2734
+vyx_energy = 0.0863
+vxy_energy = 0.3101
+vzx_energy = 0.1035
+vxz_energy = 0.4184
+vzy_energy = 0.4517
+vyz_energy = 0.5085
+Gyz_energy = 4.8653
+Gzx_energy = 5.5559
+Gxy_energy = 6.2404
 
-Energia
-Ex = 73.8892
-Ey = 20.5717
-Ez = 18.2734
-vxy = 0.3101
-vyx = 0.0863
-vxz = 0.4184
-vzx = 0.1035
-vyz = 0.5085
-vzy = 0.4517 
-
-Gyz = 2.4327
-Gzx = 0.0161
-Gxy = 0.0072
-
-
-
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Deslocamento aplicado
 
-Energia
-Ex = 176.1647
-Ey = 38.3081
-Ez = 46.6562
-vxy = 0.3631
-vyx = 0.0790
-vxz = 0.3593
-vzx = 0.0952
-vyz = 0.2719
-vzy = 0.3311
-Gxy = 35.8023
-Gzx = 46.1995
-Gyz = 24.1112
-
-Método das médias
 Ex = 176.1148
 Ey = 38.3019
 Ez = 46.6544
@@ -65,3 +44,18 @@ vzy = 0.3312
 Gxy = 17.9004
 Gzx = 23.1006
 Gyz = 12.0562
+
+Energy
+Ex = 176.1647
+Ey = 38.3081
+Ez = 46.6562
+vxy = 0.3631
+vyx = 0.0790
+vxz = 0.3593
+vzx = 0.0952
+vyz = 0.2719
+vzy = 0.3311
+Gxy = 17.9012
+Gzx = 23.0998
+Gyz = 12.0556
+
