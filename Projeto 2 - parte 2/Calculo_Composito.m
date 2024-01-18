@@ -217,30 +217,78 @@ aux = [linspace(-2.28,-2.28+0.19*4,4) linspace(-2.28+0.19*4,-0.19*4,4) linspace(
 aux_ = flip(aux);
 pos_lamina = [aux -aux_];
 
+
+angle = [0 90 45 -45];
+T_sigma = zeros (3,3,4);
+
+for i=1:4
+    m = cosd(angle(i));
+    n = sind(angle(i));
+    T_sigma(:,:,i) = [m^2 n^2 2*m*n; n^2 m^2 -2*m*n; -m*n m*n m^2-n^2]
+end
+
+M = readmatrix('Results_tensao.xlsx', 'Sheet', 'Folha1', 'Range', 'B5:D28')
+
+tensoes_FEM_local = zeros(24,3)
+for i=1:24
+    tensoes_FEM_local(i,:) = M(i,:)
+end
+
+tensoes_FEM_local = transpose(tensoes_FEM_local)
+
+for i=1:4
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local(:,i);
+end
+for i=5:8
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local(:,i);
+end
+for i=9:11
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local(:,i);
+end
+for i=12:13
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,1))*tensoes_FEM_local(:,i);
+end
+for i=14:16
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local(:,i);
+end
+for i=17:20
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local(:,i);
+end
+for i=21:24
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local(:,i)
+end
+
 figure
-plot(tensoes_1(1,:),pos_lamina,'LineWidth',2)
+plot(tensoes_1(1,:),pos_lamina,'LineWidth',1)
 hold on
-plot(tensoes_2(1,:),pos_lamina,'LineWidth',2)
-legend('CF tensão', 'CF extensão')
+plot(tensoes_2(1,:),pos_lamina,'LineWidth',1)
+hold on
+plot(tensoes_FEM(1,:),pos_lamina,'LineWidth',1)
+legend('CF tensão', 'CF extensão','FEM - Tensão aplicada')
 title('Tensão no eixo x em função da espessura')
 xlabel('\sigma_x (MPa)')
 ylabel('z (mm)')
 
 
 figure
-plot(tensoes_1(2,:),pos_lamina,'LineWidth',2)
+plot(tensoes_1(2,:),pos_lamina,'LineWidth',1)
 hold on
-plot(tensoes_2(2,:),pos_lamina,'LineWidth',2)
-legend('CF tensão', 'CF extensão')
+plot(tensoes_2(2,:),pos_lamina,'LineWidth',1)
+hold on
+plot(tensoes_FEM(2,:),pos_lamina,'LineWidth',1)
+legend('CF tensão', 'CF extensão','FEM - Tensão aplicada')
 title('Tensão no eixo y em função da espessura')
 xlabel('\sigma_y (MPa)')
 ylabel('z (mm)')
 
 
 figure
-plot(tensoes_1(3,:),pos_lamina,'LineWidth',2)
+plot(tensoes_1(3,:),pos_lamina,'LineWidth',1)
 hold on
-plot(tensoes_2(3,:),pos_lamina,'LineWidth',2)
+plot(tensoes_2(3,:),pos_lamina,'LineWidth',1)
+hold on
+plot(tensoes_FEM(3,:),pos_lamina,'LineWidth',1)
+legend('CF tensão', 'CF extensão','FEM - Tensão aplicada')
 legend('CF tensão', 'CF extensão')
 title('Tensão no eixo xy em função da espessura')
 xlabel('\tau_{xy} (MPa)')
@@ -248,8 +296,8 @@ ylabel('z (mm)')
 
 
 %% Tensões ao longo da espessura do laminado - ensaio de flexão
-P = 9;
-L = 200;
+P = 20;
+L = 100;
 b= 57.20;
 Mx = P*L/b;
 My = 0;
@@ -341,33 +389,74 @@ tensoes_lamxy_2 = [-flip(aux), tensoes_lamxy_2];
 z_aux = [0.19 0.19 0.38 0.57 0.76 0.76 0.95 1.14 1.33 1.52 1.52 1.71 1.9 2.09 2.28];
 z_aux = [-flip(z_aux) 0 z_aux];
 
+M = readmatrix('Results_tensao.xlsx', 'Sheet', 'Folha1', 'Range', 'F5:H52')
+
+tensoes_FEM_local = zeros(48,3)
+for i=1:48
+    tensoes_FEM_local(i,:) = M(i,:)
+end
+tensoes_FEM_local = transpose(tensoes_FEM_local)
+
+for i=1:8
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local(:,i);
+end
+for i=9:16
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local(:,i);
+end
+for i=17:22
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local(:,i);
+end
+for i=23:26
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,1))*tensoes_FEM_local(:,i);
+end
+for i=27:32
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local(:,i);
+end
+for i=33:40
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local(:,i);
+end
+for i=41:48
+    tensoes_FEM(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local(:,i)
+end
+
+z_FEM_aux = [0.19 0.19 0.38 0.38 0.57 0.57 0.76 0.76 0.95 0.95 1.14 1.14 1.33 1.33 1.52 1.52 1.71 1.71 1.9 1.9 2.09 2.09 2.28];
+z_FEM_aux = [-flip(z_FEM_aux) 0 0 z_FEM_aux]
+
+
 figure
-plot(tensoes_lamx_1,z_aux,'LineWidth',2)
+plot(tensoes_lamx_1,z_aux,'LineWidth',1)
 hold on
-plot(tensoes_lamx_2,z_aux,'LineWidth',2)
-legend('CF tensão', 'CF extensão')
+plot(tensoes_lamx_2,z_aux,'LineWidth',1)
+hold on
+plot(-tensoes_FEM(1,:),z_FEM_aux,'--','LineWidth',1)
+legend('CF tensão', 'CF extensão', 'FEM - Tensão aplicada')
 title('Tensão no eixo x em função da espessura')
 xlabel('\sigma_x (MPa)')
 ylabel('z (mm)')
 
 figure
-plot(tensoes_lamy_1,z_aux,'LineWidth',2)
+plot(tensoes_lamy_1,z_aux,'LineWidth',1)
 hold on
-plot(tensoes_lamy_2,z_aux,'LineWidth',2)
-legend('CF tensão', 'CF extensão')
+plot(tensoes_lamy_2,z_aux,'LineWidth',1)
+hold on
+plot(-tensoes_FEM(2,:),z_FEM_aux,'--','LineWidth',1)
+legend('CF tensão', 'CF extensão','FEM - Tensão aplicada')
 title('Tensão no eixo y em função da espessura')
 xlabel('\sigma_y (MPa)')
 ylabel('z (mm)')
 
 
 figure
-plot(tensoes_lamxy_1,z_aux,'LineWidth',2)
+plot(tensoes_lamxy_1,z_aux,'LineWidth',1)
 hold on
-plot(tensoes_lamxy_2,z_aux,'LineWidth',2)
-legend('CF tensão', 'CF extensão')
+plot(tensoes_lamxy_2,z_aux,'LineWidth',1)
+hold on
+plot(-tensoes_FEM(3,:),z_FEM_aux,'--','LineWidth',1)
+legend('CF tensão', 'CF extensão','FEM - Tensão aplicada')
 title('Tensão no eixo xy em função da espessura','LineWidth',2)
 xlabel('\tau_{xy} (MPa)')
 ylabel('z (mm)')
+
 
 %% Defleção - Teoria clássica
 
@@ -477,7 +566,7 @@ f(index)
 
 Exx_b = I_0*(2*pi*f(index))^2/(Iyy*(4.730/L)^4)*10^-3
 
-fn = sqrt(Exx_b_2*Iyy/(I_0))*(4.730/L)^2/(2*pi)
+fn = sqrt(Exx_b_1*Iyy/(I_0))*(4.730/L)^2/(2*pi)
 
 
 
