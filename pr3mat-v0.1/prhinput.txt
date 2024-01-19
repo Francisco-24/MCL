@@ -1,1 +1,9 @@
-Error Generating File due to program interruption.
+1
+HOMO
+    7
+  212
+  4.50e+00  4.00e-01  0.00e+00
+  2.90e+02  3.50e-01  0.00e+00
+    2    4   20    0    1
+  1.00e+00  1.00e+00  6.00e-01
+  0.00e+00  0.00e+00  0.00e+00

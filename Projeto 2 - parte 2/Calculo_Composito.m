@@ -117,7 +117,7 @@ vxy_1 = -A_inverse_1(2,1)/A_inverse_1(1,1);
 vyx_1  = vxy_1*Ey_1/Ex_1;
 Gxy_1 = 1/(espessura*A_inverse_1(3,3));
 
-Props_laminado_1 = [Ex_1 Ey_1 vxy_1 vyx_1 Gxy_1]
+Props_laminado_1 = [Ex_1 Ey_1 vxy_1 vyx_1 Gxy_1];
 
 %% Constantes de Elasticidade de Flexão do laminado [MPa] - Set 1
 
@@ -175,7 +175,7 @@ vxy_2 = -A_inverse_2(2,1)/A_inverse_2(1,1);
 vyx_2  = vxy_2*Ey_2/Ex_2;
 Gxy_2 = 1/(espessura*A_inverse_2(3,3));
 
-Props_laminado_2 = [Ex_2 Ey_2 vxy_2 vyx_2 Gxy_2]
+Props_laminado_2 = [Ex_2 Ey_2 vxy_2 vyx_2 Gxy_2];
 
 %% Constantes de Elasticidade de Flexão do laminado [MPa] - Set 2
 
@@ -224,38 +224,49 @@ T_sigma = zeros (3,3,4);
 for i=1:4
     m = cosd(angle(i));
     n = sind(angle(i));
-    T_sigma(:,:,i) = [m^2 n^2 2*m*n; n^2 m^2 -2*m*n; -m*n m*n m^2-n^2]
+    T_sigma(:,:,i) = [m^2 n^2 2*m*n; n^2 m^2 -2*m*n; -m*n m*n m^2-n^2];
 end
 
-M = readmatrix('Results_tensao.xlsx', 'Sheet', 'Folha1', 'Range', 'B5:D28')
+M = readmatrix('Results_tensao.xlsx', 'Sheet', 'Folha1', 'Range', 'B5:D28');
+N = readmatrix('Results_disp.xlsx', 'Sheet', 'Folha1', 'Range', 'B5:D28');
 
-tensoes_FEM_local = zeros(24,3)
+tensoes_FEM_local_1 = zeros(24,3);
+tensoes_FEM_local_2 = zeros(24,3);
 for i=1:24
-    tensoes_FEM_local(i,:) = M(i,:)
+    tensoes_FEM_local_1(i,:) = M(i,:);
+    tensoes_FEM_local_2(i,:) = N(i,:);
 end
 
-tensoes_FEM_local = transpose(tensoes_FEM_local)
+tensoes_FEM_local_1 = transpose(tensoes_FEM_local_1);
+tensoes_FEM_local_2 = transpose(tensoes_FEM_local_2);
 
 for i=1:4
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local_2(:,i);
 end
 for i=5:8
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local_2(:,i);
 end
 for i=9:11
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local_2(:,i);
 end
 for i=12:13
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,1))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,1))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,1))*tensoes_FEM_local_2(:,i);
 end
 for i=14:16
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local_2(:,i);
 end
 for i=17:20
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local_2(:,i);
 end
 for i=21:24
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local(:,i)
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local_2(:,i);
 end
 
 figure
@@ -263,8 +274,10 @@ plot(tensoes_1(1,:),pos_lamina,'LineWidth',1)
 hold on
 plot(tensoes_2(1,:),pos_lamina,'LineWidth',1)
 hold on
-plot(tensoes_FEM(1,:),pos_lamina,'LineWidth',1)
-legend('CF tensão', 'CF extensão','FEM - Tensão aplicada')
+plot(tensoes_FEM_1(1,:),pos_lamina,'--','LineWidth',1)
+hold on
+plot(tensoes_FEM_2(1,:),pos_lamina,'--','LineWidth',1)
+legend('Teoria Clássica - Energia Tensão', 'Teoria Clássica - Energia Deformação','FEM - Energia Tensão','FEM - Energia Deformação')
 title('Tensão no eixo x em função da espessura')
 xlabel('\sigma_x (MPa)')
 ylabel('z (mm)')
@@ -275,8 +288,10 @@ plot(tensoes_1(2,:),pos_lamina,'LineWidth',1)
 hold on
 plot(tensoes_2(2,:),pos_lamina,'LineWidth',1)
 hold on
-plot(tensoes_FEM(2,:),pos_lamina,'LineWidth',1)
-legend('CF tensão', 'CF extensão','FEM - Tensão aplicada')
+plot(tensoes_FEM_1(2,:),pos_lamina,'--','LineWidth',1)
+hold on
+plot(tensoes_FEM_2(2,:),pos_lamina,'--','LineWidth',1)
+legend('Teoria Clássica - Energia Tensão', 'Teoria Clássica - Energia Deformação','FEM - Energia Tensão','FEM - Energia Deformação')
 title('Tensão no eixo y em função da espessura')
 xlabel('\sigma_y (MPa)')
 ylabel('z (mm)')
@@ -287,17 +302,19 @@ plot(tensoes_1(3,:),pos_lamina,'LineWidth',1)
 hold on
 plot(tensoes_2(3,:),pos_lamina,'LineWidth',1)
 hold on
-plot(tensoes_FEM(3,:),pos_lamina,'LineWidth',1)
+plot(tensoes_FEM_1(3,:),pos_lamina,'--','LineWidth',1)
+hold on
+plot(tensoes_FEM_2(3,:),pos_lamina,'--','LineWidth',1)
 legend('CF tensão', 'CF extensão','FEM - Tensão aplicada')
 legend('CF tensão', 'CF extensão')
-title('Tensão no eixo xy em função da espessura')
+legend('Teoria Clássica - Energia Tensão', 'Teoria Clássica - Energia Deformação','FEM - Energia Tensão','FEM - Energia Deformação')
 xlabel('\tau_{xy} (MPa)')
 ylabel('z (mm)')
 
 
 %% Tensões ao longo da espessura do laminado - ensaio de flexão
 P = 20;
-L = 100;
+L = 150;
 b= 57.20;
 Mx = P*L/b;
 My = 0;
@@ -389,38 +406,50 @@ tensoes_lamxy_2 = [-flip(aux), tensoes_lamxy_2];
 z_aux = [0.19 0.19 0.38 0.57 0.76 0.76 0.95 1.14 1.33 1.52 1.52 1.71 1.9 2.09 2.28];
 z_aux = [-flip(z_aux) 0 z_aux];
 
-M = readmatrix('Results_tensao.xlsx', 'Sheet', 'Folha1', 'Range', 'F5:H52')
+M = readmatrix('Results_tensao.xlsx', 'Sheet', 'Folha1', 'Range', 'F5:H52');
+N = readmatrix('Results_disp.xlsx', 'Sheet', 'Folha1', 'Range', 'F5:H52');
 
-tensoes_FEM_local = zeros(48,3)
+tensoes_FEM_local_1 = zeros(48,3);
+tensoes_FEM_local_2 = zeros(48,3);
 for i=1:48
-    tensoes_FEM_local(i,:) = M(i,:)
+    tensoes_FEM_local_1(i,:) = M(i,:);
+    tensoes_FEM_local_2(i,:) = N(i,:);
 end
-tensoes_FEM_local = transpose(tensoes_FEM_local)
+
+tensoes_FEM_local_1 = transpose(tensoes_FEM_local_1);
+tensoes_FEM_local_2 = transpose(tensoes_FEM_local_2);
 
 for i=1:8
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local_2(:,i);
 end
 for i=9:16
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local_2(:,i);
 end
 for i=17:22
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local_2(:,i);
 end
 for i=23:26
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,1))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,1))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,1))*tensoes_FEM_local_2(:,i);
 end
 for i=27:32
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,2))*tensoes_FEM_local_2(:,i);
 end
 for i=33:40
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local(:,i);
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,3))*tensoes_FEM_local_2(:,i);
 end
 for i=41:48
-    tensoes_FEM(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local(:,i)
+    tensoes_FEM_1(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local_1(:,i);
+    tensoes_FEM_2(:,i) = inv(T_sigma(:,:,4))*tensoes_FEM_local_2(:,i);
 end
 
 z_FEM_aux = [0.19 0.19 0.38 0.38 0.57 0.57 0.76 0.76 0.95 0.95 1.14 1.14 1.33 1.33 1.52 1.52 1.71 1.71 1.9 1.9 2.09 2.09 2.28];
-z_FEM_aux = [-flip(z_FEM_aux) 0 0 z_FEM_aux]
+z_FEM_aux = [-flip(z_FEM_aux) 0 0 z_FEM_aux];
 
 
 figure
@@ -428,8 +457,10 @@ plot(tensoes_lamx_1,z_aux,'LineWidth',1)
 hold on
 plot(tensoes_lamx_2,z_aux,'LineWidth',1)
 hold on
-plot(-tensoes_FEM(1,:),z_FEM_aux,'--','LineWidth',1)
-legend('CF tensão', 'CF extensão', 'FEM - Tensão aplicada')
+plot(-tensoes_FEM_1(1,:),z_FEM_aux,'--','LineWidth',1)
+hold on
+plot(-tensoes_FEM_2(1,:),z_FEM_aux,'--','LineWidth',1)
+legend('Teoria Clássica - Energia Tensão', 'Teoria Clássica - Energia Deformação','FEM - Energia Tensão','FEM - Energia Deformação')
 title('Tensão no eixo x em função da espessura')
 xlabel('\sigma_x (MPa)')
 ylabel('z (mm)')
@@ -439,8 +470,10 @@ plot(tensoes_lamy_1,z_aux,'LineWidth',1)
 hold on
 plot(tensoes_lamy_2,z_aux,'LineWidth',1)
 hold on
-plot(-tensoes_FEM(2,:),z_FEM_aux,'--','LineWidth',1)
-legend('CF tensão', 'CF extensão','FEM - Tensão aplicada')
+plot(-tensoes_FEM_1(2,:),z_FEM_aux,'--','LineWidth',1)
+hold on
+plot(-tensoes_FEM_2(2,:),z_FEM_aux,'--','LineWidth',1)
+legend('Teoria Clássica - Energia Tensão', 'Teoria Clássica - Energia Deformação','FEM - Energia Tensão','FEM - Energia Deformação')
 title('Tensão no eixo y em função da espessura')
 xlabel('\sigma_y (MPa)')
 ylabel('z (mm)')
@@ -451,9 +484,11 @@ plot(tensoes_lamxy_1,z_aux,'LineWidth',1)
 hold on
 plot(tensoes_lamxy_2,z_aux,'LineWidth',1)
 hold on
-plot(-tensoes_FEM(3,:),z_FEM_aux,'--','LineWidth',1)
+plot(-tensoes_FEM_1(3,:),z_FEM_aux,'--','LineWidth',1)
+hold on
+plot(-tensoes_FEM_2(3,:),z_FEM_aux,'--','LineWidth',1)
 legend('CF tensão', 'CF extensão','FEM - Tensão aplicada')
-title('Tensão no eixo xy em função da espessura','LineWidth',2)
+legend('Teoria Clássica - Energia Tensão', 'Teoria Clássica - Energia Deformação','FEM - Energia Tensão','FEM - Energia Deformação')
 xlabel('\tau_{xy} (MPa)')
 ylabel('z (mm)')
 
@@ -479,6 +514,23 @@ plot(x,w0_TC_1,'LineWidth',2)
 hold on
 plot(x,w0_TC_2,'LineWidth',2)
 legend('CF Tensão','CF Extensão')
+title('Defleção','LineWidth',2)
+ylabel('w_{0} (mm)')
+xlabel('x (mm)')
+
+w0_FEM_1 = readmatrix('Livro1.xlsx', 'Sheet', 'Folha1', 'Range', 'H3:H203');
+w0_FEM_2 = readmatrix('Livro1.xlsx', 'Sheet', 'Folha1', 'Range', 'G3:G203');
+x_FEM = linspace(0,200,201);
+
+figure
+plot(x,w0_TC_1,'LineWidth',2)
+hold on
+plot(x,w0_TC_2,'LineWidth',2)
+hold on
+plot(x_FEM,w0_FEM_1,'--','LineWidth',2)
+hold on
+plot(x_FEM,w0_FEM_2,'--','LineWidth',2)
+legend('Teoria Clássica - Energia Tensão', 'Teoria Clássica - Energia Deformação','FEM - Energia Tensão','FEM - Energia Deformação')
 title('Defleção','LineWidth',2)
 ylabel('w_{0} (mm)')
 xlabel('x (mm)')
